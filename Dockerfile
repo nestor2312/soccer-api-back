@@ -13,7 +13,9 @@ VOLUME /var/cache/composer
 COPY composer.json composer.lock ./
 
 # Instalar dependencias
-RUN composer install --no-interaction --no-dev
+RUN composer install --no-interaction --no-dev && \
+    composer clearcache
+
 
 # Copiar el resto del proyecto
 COPY . .
