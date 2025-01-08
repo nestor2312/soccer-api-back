@@ -1,23 +1,20 @@
-# Utiliza una imagen base de PHP con las extensiones necesarias
-FROM php:8.2-fpm
+FROM php:7.4.8-fpm
 
-# Instala extensiones PHP
-RUN apt-get update && apt-get install -y \
-    libzip-dev \
-    zip \
-    unzip \
-    && docker-php-ext-install pdo pdo_mysql zip
+# Instalar Composer
+RUN apt-get update && apt-get install -y curl && \
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Copia los archivos de tu proyecto
+# Copiar composer.json y composer.lock
 COPY composer.json composer.lock ./
-RUN composer install --no-interaction
-COPY . .
 
-# Establece el directorio de trabajo
+# Instalar dependencias
+RUN composer install --no-interaction
+
+# Copiar el resto del proyecto (opcional para depuración)
+# COPY . . 
+
 WORKDIR /var/www/html
 
-# Expone el puerto
 EXPOSE 9000
 
-# Comando para iniciar el servidor PHP-FPM
 CMD ["php-fpm"]
