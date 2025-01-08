@@ -1,8 +1,7 @@
 FROM php:8.2-fpm-alpine
 
-# Instalar extensiones PHP y herramientas
-RUN apk add --no-cache libzip-dev zip unzip && \
-    docker-php-ext-install pdo_mysql zip gd
+RUN apk add --no-cache libzip-dev zip unzip libpng-dev && \
+    docker-php-ext-install pdo_mysql zip gd 
 
 # Instalar Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
