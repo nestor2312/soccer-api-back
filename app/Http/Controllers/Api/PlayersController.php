@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Player;
+use App\Models\Equipo;
 class PlayersController extends Controller
 {
     /**
@@ -17,7 +18,18 @@ class PlayersController extends Controller
         $jugadores = Player::with('equipo')->get();
         return $jugadores;
     }
-
+    public function getJugadoresPorEquipo($equipoId)
+    {
+        $equipo = Equipo::with('jugadores')->find($equipoId);
+    
+        if (!$equipo) {
+            return response()->json(['error' => 'Equipo no encontrado'], 404);
+        }
+    
+        return response()->json($equipo);
+    }
+    
+    
     /**
      * Store a newly created resource in storage.
      *

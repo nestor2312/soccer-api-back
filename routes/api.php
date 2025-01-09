@@ -76,6 +76,8 @@ Route::controller(PlayersController::class)->group(function () {
 
 
 });
+// En routes/api.php (Laravel)
+Route::get('equipos/{equipoId}/jugadores', [PlayersController::class, 'getJugadoresPorEquipo']);
 
 
 Route::controller(EliminatoriaController::class)->group(function () {
