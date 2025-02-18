@@ -17,7 +17,7 @@ class PartidosController extends Controller
         // $partidos = Partido::all();
         // return $partidos ;
 
-        $partidos = Partido::with('equipoA','equipoB')->orderBy('id', 'desc')->get();;
+        $partidos = Partido::with('equipoA','equipoB')->orderBy('id', 'desc')->paginate(10); 
         return $partidos;
 
         
@@ -38,6 +38,8 @@ class PartidosController extends Controller
         $partido -> marcador2 = $request->marcador2;
         $partido -> equipoA()->associate( $request->equipoA_id );
         $partido -> equipoB()->associate( $request->equipoB_id );
+        $partido -> fecha = $request->fecha;
+        $partido -> hora = $request->hora;
         $partido ->save();
         return response()->json($partido, 201);
     }
@@ -69,10 +71,12 @@ class PartidosController extends Controller
         }
     
         $validatedData = $request->validate([
-            'equipoLocalID' => 'required|integer|exists:equipos,id',
-            'equipoVisitanteID' => 'required|integer|exists:equipos,id',
-            'marcador1' => 'required|integer|min:0',
-            'marcador2' => 'required|integer|min:0',
+            'equipoA_id' => 'required|integer|exists:equipos,id',
+            'equipoB_id' => 'required|integer|exists:equipos,id',
+            'marcador1' => '|integer|min:0',
+            'marcador2' => '|integer|min:0',
+            'fecha' => 'required',
+            'hora' => 'required',
         ]);
     
         $partido->update($validatedData);

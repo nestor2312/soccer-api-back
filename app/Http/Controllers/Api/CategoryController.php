@@ -24,6 +24,14 @@ class CategoryController extends Controller
         return response()->json($categorias);
     }
 
+    public function paginador()
+    {
+        $categorias = Category::with('torneo')->orderBy('id', 'desc')->paginate(10); 
+        
+        return response()->json($categorias); // Retorna en formato JSON
+    }
+    
+
   
 
     public function Admin()

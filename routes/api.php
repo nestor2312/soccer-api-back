@@ -41,7 +41,7 @@ use App\Http\Controllers\Api\AuthController;
 Route::controller(GruposController::class)->group(function () {
     Route::get('/grupos', 'index')->name('grupos.index');
     Route::get('/grupos/{subcategoriaId}', 'gruposXsubcategoria')->name('grupos.gruposXsubcategoria');
-    Route::get('/grupos', 'admin')->name('grupos.admin');
+    Route::get('/gruposp', 'admin')->name('grupos.admin');
     Route::post('/grupo', 'store')->name('grupos.store');
     Route::delete('/grupo/{id}', 'destroy')->name('grupo.destroy');
     Route::put('/grupo/{id}', 'update')->name('grupo.update');
@@ -108,7 +108,7 @@ Route::controller(CategoryController::class)->group(function () {
     Route::post('/categoria', 'store')->name('categoria.store');
     Route::delete('/categoria/{id}', 'destroy')->name('categoria.destroy');
     Route::put('/categoria/{id}', 'update')->name('categoria.update');
-    
+    Route::get('/categoriasp', 'paginador')->name('categoria.paginador');
 });
 
 
@@ -120,6 +120,7 @@ Route::controller(SubCategoryController::class)->group(function () {
     Route::get('/subcategorias', 'admin')->name('subcategoria.admin');
     Route::delete('/subcategoria/{id}', 'destroy')->name('subcategoria.destroy');
     Route::put('/subcategoria/{id}', 'update')->name('subcategoria.update');
+    Route::get('/subcategoriasp', 'paginador')->name('subcategoria.paginador');
     // Route::delete('/subcategoria/{id}', 'destroy')->name('subcategoria.destroy');
    
 });
@@ -128,6 +129,7 @@ Route::get('/partidos/subcategoria/{subcategoriaId}', [SubCategoryController::cl
 
 Route::controller(TorneoController::class)->group(function () {
     Route::get('/torneos', 'index')->name('torneo.index');
+    Route::get('/torneosp', 'paginador')->name('torneo.paginador');
     Route::post('/torneo', 'store')->name('torneo.store');
     Route::delete('/torneo/{id}', 'destroy')->name('torneo.destroy');
     Route::put('/torneo/{id}', 'update')->name('torneo.update');

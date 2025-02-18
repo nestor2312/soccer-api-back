@@ -15,7 +15,7 @@ class PlayersController extends Controller
      */
     public function index()
     {
-        $jugadores = Player::with('equipo')->get();
+        $jugadores = Player::with('equipo')->orderBy('id', 'desc')->paginate(10); 
         return $jugadores;
     }
     public function getJugadoresPorEquipo($equipoId)

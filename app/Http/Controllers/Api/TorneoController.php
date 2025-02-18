@@ -18,6 +18,12 @@ class TorneoController extends Controller
         return $torneos;
     }
 
+      public function paginador()
+    {
+        $torneos = Torneo::orderBy('id', 'desc')->paginate(10);
+        return $torneos;
+    }
+
     /**
      * Store a newly created resource in storage.
      *

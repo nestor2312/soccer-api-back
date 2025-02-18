@@ -28,7 +28,7 @@ class EquiposController extends Controller
         // $equipos = Equipo::all();
         // return $equipos ;
 
-                $equipos = Equipo::with('grupo')->orderBy('id', 'desc')->get();
+                $equipos = Equipo::with('grupo')->orderBy('id', 'desc')->paginate(10); 
       
         return $equipos;
 

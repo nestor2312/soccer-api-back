@@ -23,14 +23,14 @@ class GruposController extends Controller
 
     public function index()
     {
-        $grupos = Grupos::with('subcategoria')->orderBy('id', 'desc')->get();
+        $grupos = Grupos::with('subcategoria')->orderBy('id', 'desc')->get(); 
         // $grupos = Grupos::all();
         return $grupos;
     }
 
     public function Admin()
     {
-        $grupos = Grupos::with('subcategoria')->orderBy('id', 'desc')->get();
+        $grupos = Grupos::with('subcategoria')->orderBy('id', 'desc')->paginate(10); 
         // $categorias = Category::where('torneo_id', $torneoId)->get();
         return response()->json($grupos);
     }
