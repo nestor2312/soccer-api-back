@@ -20,7 +20,7 @@ class CreateGruposTable extends Migration
           
             $table->foreign('subcategoria_id')
       ->references('id')
-      ->on('subcategorias')
+      ->on('subcategories')
       ->cascadeOnDelete();
 
             $table->string('nombre');
