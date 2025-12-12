@@ -17,7 +17,12 @@ class CreateGruposTable extends Migration
             $table->id();
 
             $table->unsignedBigInteger('subcategoria_id');
-            $table->foreign('subcategoria_id')->references('id')->on('subcategories');
+          
+            $table->foreign('subcategoria_id')
+      ->references('id')
+      ->on('subcategorias')
+      ->cascadeOnDelete();
+
             $table->string('nombre');
             $table->integer('num_clasificados');
             $table->timestamps();
