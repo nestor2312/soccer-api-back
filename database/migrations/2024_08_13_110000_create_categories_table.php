@@ -17,7 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->id();
             $table->string('nombre');
             $table->unsignedBigInteger('torneo_id');
-            $table->foreign('torneo_id')->references('id')->on('torneo');
+            $table->foreign('torneo_id')->references('id')->on('torneos');
             $table->timestamps();
         });
     }
