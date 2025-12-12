@@ -11,6 +11,12 @@ class Category extends Model
 
     public function torneo()
     {
-        return $this->belongsTo(Torneo::class);
+               return $this->belongsTo(Torneo::class, 'torneo_id'); 
+    }
+
+     // Relación con Subcategorías
+    public function subcategorias()
+    {
+        return $this->hasMany(SubCategory::class, 'categoria_id');
     }
 }

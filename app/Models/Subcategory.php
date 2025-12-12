@@ -13,14 +13,16 @@ class Subcategory extends Model
     //     return $this->hasMany(Grupos::class);
     // }
 
+  
+
     public function equipos()
     {
         return $this->hasManyThrough(Equipo::class, Grupos::class, 'subcategoria_id', 'grupo_id');
     }
 
-    public function categoria()
+   public function categoria()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'categoria_id');
     }
 
     public function eliminatorias()

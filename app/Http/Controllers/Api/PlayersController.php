@@ -59,15 +59,17 @@ class PlayersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        $jugador = Player::with('equipo')->find($id);
-        if (!$jugador) {
-            return response()->json(['message' => 'Jugador no encontrado'], 404);
-        }
+  {
+    $jugador = Player::with([
+        'equipo.grupo.subcategoria.categoria.torneo'
+    ])->find($id);
 
-        return response()->json($jugador);
+    if (!$jugador) {
+        return response()->json(['message' => 'Jugador no encontrado'], 404);
     }
 
+    return response()->json($jugador);
+  }
     /**
      * Update the specified resource in storage.
      *

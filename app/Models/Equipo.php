@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Equipo extends Model
 {
     use HasFactory;
-      protected $fillable = ['grupo_id','nombre', 'archivo'];
+      protected $fillable = ['grupo_id','nombre', 'archivo','color_hover'];
 
       
       public function grupo()

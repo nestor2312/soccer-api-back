@@ -60,6 +60,7 @@ Route::controller(EquiposController::class)->group(function () {
 
 Route::controller(PartidosController::class)->group(function () {
     Route::get('/partidos', 'index')->name('partidos.index');
+    Route::get('/partidos/{id}', 'show')->name('partidos.show');
     Route::post('/partido', 'store')->name('partido.store');
     Route::delete('/partido/{id}', 'destroy')->name('partido.destroy');
     Route::put('/partido/{id}', 'update')->name('partido.update');
@@ -68,6 +69,8 @@ Route::controller(PartidosController::class)->group(function () {
 Route::controller(PlayersController::class)->group(function () {
     Route::get('/jugadores', 'index')->name('jugadores.index');
     Route::post('/jugador', 'store')->name('jugador.store');
+   
+
     Route::delete('/jugador/{id}', 'destroy')->name('jugadores.destroy');
     Route::put('/jugador/{id}', 'update')->name('jugador.update');
     Route::get('/jugadores/{id}', 'show')->name('jugador.show');
@@ -84,7 +87,7 @@ Route::controller(EliminatoriaController::class)->group(function () {
     Route::get('/eliminatorias', 'index')->name('eliminatorias.index');
     Route::get('/eliminatoria/subcategoria/{id}', 'getEliminatoriasBySubcategoria')->name('eliminatorias.getEliminatoriasBySubcategoria');
     Route::post('/eliminatoria', 'store')->name('eliminatorias.store');
-    Route::delete('/eliminatorias/{id}', 'destroy')->name('eliminatorias.destroy');
+    Route::delete('/eliminatoria/{id}', 'destroy')->name('eliminatorias.destroy');
     Route::put('/eliminatoria/{id}', 'update')->name('eliminatoria.update');
 });
 
@@ -98,7 +101,9 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/userTeams', 'Teams')->name('equipos.Teams');
 
     Route::get('/userHomeTeams', 'HomeTeams')->name('equipos.HomeTeams');
-    Route::get('/userHomeclassification', 'Homeclassification')->name('grupos.Homeclassification');
+    Route::get('/userHomeclassification', 'HomeclassificationAll')->name('grupos.HomeclassificationAll');
+
+    Route::get('/userHomeclassification/{subcategoriaId}', 'Homeclassification')->name('grupos.Homeclassification');
    
 });
 Route::controller(CategoryController::class)->group(function () {
@@ -118,6 +123,8 @@ Route::controller(SubCategoryController::class)->group(function () {
     Route::get('/categoria/{id}/subcategorias', 'index')->name('subcategoria.index');
     Route::post('/subcategoria', 'store')->name('subcategoria.store');
     Route::get('/subcategorias', 'admin')->name('subcategoria.admin');
+   
+    
     Route::delete('/subcategoria/{id}', 'destroy')->name('subcategoria.destroy');
     Route::put('/subcategoria/{id}', 'update')->name('subcategoria.update');
     Route::get('/subcategoriasp', 'paginador')->name('subcategoria.paginador');

@@ -66,51 +66,139 @@ class UserController extends Controller
     //     'last_page' => $grupos->lastPage(),
     // ];
     // }
-    public function Homeclassification(Request $request)
-    {
-        // Obtener los grupos que pertenecen a la subcategoría con paginación
-        $page = $request->get('pages', 4);
-        $grupos = Grupos::orderBy('nombre', 'asc')->paginate($page);
-        $datosGrupos = [];
-    
-        foreach ($grupos as $grupo) {
-            // Consulta para obtener los equipos de cada grupo con estadísticas en 0 si no han jugado partidos
-            $equipos = DB::select('
-                SELECT 
-                    e.id, e.nombre, e.archivo,
-                    COALESCE(SUM(CASE WHEN u.GF > u.GA THEN 3 ELSE 0 END + CASE WHEN u.GF = u.GA THEN 1 ELSE 0 END), 0) AS puntos,
-                    COALESCE(COUNT(CASE WHEN u.GF > u.GA THEN 1 END), 0) AS pg,
-                    COALESCE(COUNT(CASE WHEN u.GF < u.GA THEN 1 END), 0) AS pp,
-                    COALESCE(COUNT(CASE WHEN u.GF = u.GA THEN 1 END), 0) AS pe,
-                    COALESCE(COUNT(u.GF), 0) AS pj,
-                    COALESCE(SUM(u.GF), 0) AS gf,
-                    COALESCE(SUM(u.GA), 0) AS gc,
-                    COALESCE(SUM(u.GF - u.GA), 0) AS gd
-                FROM equipos e
-                LEFT JOIN (
-                    SELECT p.equipoA_id AS team_id, p.marcador1 AS GF, p.marcador2 AS GA FROM partidos p
-                    UNION ALL
-                    SELECT p.equipoB_id AS team_id, p.marcador2 AS GF, p.marcador1 AS GA FROM partidos p
-                ) u ON u.team_id = e.id
-                WHERE e.grupo_id = :grupo_id
-               GROUP BY e.id, e.nombre, e.archivo
-                ORDER BY puntos DESC', 
-                ['grupo_id' => $grupo->id]);
-    
-            // Añadir los datos del grupo con sus equipos
-            $datosGrupos[] = [
-                'grupo' => $grupo,
-                'equipos' => $equipos
-            ];
-        }
-    
-        return response()->json([
-            'data' => $datosGrupos,
-            'current_page' => $grupos->currentPage(),
-            'last_page' => $grupos->lastPage(),
-            'total' => $grupos->total()
-        ]);
+
+
+public function HomeclassificationAll(Request $request)
+{
+    $Page = $request->get('pages', 2);
+
+    $grupos = Grupos::with('subcategoria.categoria.torneo')
+        ->orderBy('nombre', 'asc')
+        ->paginate($Page);
+
+    $datosGrupos = [];
+
+    foreach ($grupos as $grupo) {
+        $equipos = DB::select('
+            SELECT 
+                e.id, e.nombre, e.archivo,
+                COALESCE(SUM(CASE WHEN u.GF > u.GA THEN 3 ELSE 0 END + CASE WHEN u.GF = u.GA THEN 1 ELSE 0 END), 0) AS puntos,
+                COALESCE(COUNT(CASE WHEN u.GF > u.GA THEN 1 END), 0) AS pg,
+                COALESCE(COUNT(CASE WHEN u.GF < u.GA THEN 1 END), 0) AS pp,
+                COALESCE(COUNT(CASE WHEN u.GF = u.GA THEN 1 END), 0) AS pe,
+                COALESCE(COUNT(u.GF), 0) AS pj,
+                COALESCE(SUM(u.GF), 0) AS gf,
+                COALESCE(SUM(u.GA), 0) AS gc,
+                COALESCE(SUM(u.GF - u.GA), 0) AS gd
+            FROM equipos e
+            LEFT JOIN (
+                SELECT p.equipoA_id AS team_id, p.marcador1 AS GF, p.marcador2 AS GA FROM partidos p
+                UNION ALL
+                SELECT p.equipoB_id AS team_id, p.marcador2 AS GF, p.marcador1 AS GA FROM partidos p
+            ) u ON u.team_id = e.id
+            WHERE e.grupo_id = :grupo_id
+            GROUP BY e.id, e.nombre, e.archivo
+            ORDER BY puntos DESC', 
+            ['grupo_id' => $grupo->id]);
+
+        $datosGrupos[] = [
+            'grupo' => [
+                'id' => $grupo->id,
+                'nombre' => $grupo->nombre,
+                'num_clasificados' => $grupo->num_clasificados,
+                'subcategoria' => [
+                    'id' => $grupo->subcategoria->id ?? null,
+                    'nombre' => $grupo->subcategoria->nombre ?? null,
+                    'categoria' => [
+                        'id' => $grupo->subcategoria->categoria->id ?? null,
+                        'nombre' => $grupo->subcategoria->categoria->nombre ?? null,
+                        'torneo' => [
+                            'id' => $grupo->subcategoria->categoria->torneo->id ?? null,
+                            'nombre' => $grupo->subcategoria->categoria->torneo->nombre ?? null,
+                        ]
+                    ]
+                ]
+            ],
+            'equipos' => $equipos
+        ];
     }
-    
+
+    return response()->json([
+        'data' => $datosGrupos,
+        'current_page' => $grupos->currentPage(),
+        'last_page' => $grupos->lastPage(),
+        'total' => $grupos->total()
+    ]);
+}
+
+
+
+
+ public function Homeclassification(Request $request, $subcategoriaId)
+{
+    $Page = $request->get('pages', 2);
+
+    // Solo grupos de esa subcategoría
+    $grupos = Grupos::with('subcategoria.categoria.torneo')
+        ->where('subcategoria_id', $subcategoriaId)
+        ->orderBy('nombre', 'asc')
+        ->paginate($Page);
+
+    $datosGrupos = [];
+
+    foreach ($grupos as $grupo) {
+        $equipos = DB::select('
+            SELECT 
+                e.id, e.nombre, e.archivo,
+                COALESCE(SUM(CASE WHEN u.GF > u.GA THEN 3 ELSE 0 END + CASE WHEN u.GF = u.GA THEN 1 ELSE 0 END), 0) AS puntos,
+                COALESCE(COUNT(CASE WHEN u.GF > u.GA THEN 1 END), 0) AS pg,
+                COALESCE(COUNT(CASE WHEN u.GF < u.GA THEN 1 END), 0) AS pp,
+                COALESCE(COUNT(CASE WHEN u.GF = u.GA THEN 1 END), 0) AS pe,
+                COALESCE(COUNT(u.GF), 0) AS pj,
+                COALESCE(SUM(u.GF), 0) AS gf,
+                COALESCE(SUM(u.GA), 0) AS gc,
+                COALESCE(SUM(u.GF - u.GA), 0) AS gd
+            FROM equipos e
+            LEFT JOIN (
+                SELECT p.equipoA_id AS team_id, p.marcador1 AS GF, p.marcador2 AS GA FROM partidos p
+                UNION ALL
+                SELECT p.equipoB_id AS team_id, p.marcador2 AS GF, p.marcador1 AS GA FROM partidos p
+            ) u ON u.team_id = e.id
+            WHERE e.grupo_id = :grupo_id
+            GROUP BY e.id, e.nombre, e.archivo
+            ORDER BY puntos DESC', 
+            ['grupo_id' => $grupo->id]);
+
+        $datosGrupos[] = [
+            'grupo' => [
+                'id' => $grupo->id,
+                'nombre' => $grupo->nombre,
+                'num_clasificados' => $grupo->num_clasificados,
+                'subcategoria' => [
+                    'id' => $grupo->subcategoria->id ?? null,
+                    'nombre' => $grupo->subcategoria->nombre ?? null,
+                    'categoria' => [
+                        'id' => $grupo->subcategoria->categoria->id ?? null,
+                        'nombre' => $grupo->subcategoria->categoria->nombre ?? null,
+                        'torneo' => [
+                            'id' => $grupo->subcategoria->categoria->torneo->id ?? null,
+                            'nombre' => $grupo->subcategoria->categoria->torneo->nombre ?? null,
+                        ]
+                    ]
+                ]
+            ],
+            'equipos' => $equipos
+        ];
+    }
+
+    return response()->json([
+        'data' => $datosGrupos,
+        'current_page' => $grupos->currentPage(),
+        'last_page' => $grupos->lastPage(),
+        'total' => $grupos->total()
+    ]);
+}
+
+
 
 }

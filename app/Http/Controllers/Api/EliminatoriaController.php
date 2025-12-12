@@ -15,11 +15,13 @@ class EliminatoriaController extends Controller
     public function index() {
         $eliminatorias = Eliminatoria::with('equipoAa', 'equipoB')->get();
         
-        $eliminatoriasCuartos = $eliminatorias->filter(fn($eliminatoria) => $eliminatoria->numPartido == 1);
-        $eliminatoriasSemis = $eliminatorias->filter(fn($eliminatoria) => $eliminatoria->numPartido == 2);
-        $eliminatoriasFinal = $eliminatorias->filter(fn($eliminatoria) => $eliminatoria->numPartido == 3);
+         $eliminatoriasOctavos = $eliminatorias->filter(fn($eliminatoria) => $eliminatoria->numPartido == 1);
+        $eliminatoriasCuartos = $eliminatorias->filter(fn($eliminatoria) => $eliminatoria->numPartido == 2);
+        $eliminatoriasSemis = $eliminatorias->filter(fn($eliminatoria) => $eliminatoria->numPartido == 3);
+        $eliminatoriasFinal = $eliminatorias->filter(fn($eliminatoria) => $eliminatoria->numPartido == 4);
     
         return response()->json([
+             'octavos' => $eliminatoriasOctavos->values(),
             'cuartos' => $eliminatoriasCuartos->values(),
             'semis' => $eliminatoriasSemis->values(),
             'final' => $eliminatoriasFinal->values(),
@@ -28,26 +30,34 @@ class EliminatoriaController extends Controller
 
     public function getEliminatoriasBySubcategoria($subcategoriaId)
     {
+         // Obtener las eliminatorias de octavos de final
+        $eliminatoriasOctavos = Eliminatoria::with('equipoAa', 'equipoB')
+            ->where('subcategoria_id', $subcategoriaId)
+            ->where('numPartido', '1')
+            ->get();
+    
+
         // Obtener las eliminatorias de cuartos de final
         $eliminatoriasCuartos = Eliminatoria::with('equipoAa', 'equipoB')
             ->where('subcategoria_id', $subcategoriaId)
-            ->where('numPartido', '1')
+            ->where('numPartido', '2')
             ->get();
     
         // Obtener las eliminatorias de semifinales
         $eliminatoriasSemis = Eliminatoria::with('equipoAa', 'equipoB')
             ->where('subcategoria_id', $subcategoriaId)
-            ->where('numPartido', '2')
+            ->where('numPartido', '3')
             ->get();
     
         // Obtener las eliminatorias de la final
         $eliminatoriasFinal = Eliminatoria::with('equipoAa', 'equipoB')
             ->where('subcategoria_id', $subcategoriaId)
-            ->where('numPartido', '3')
+            ->where('numPartido', '4')
             ->get();
     
         // Retornar los partidos organizados por fases en formato JSON
         return response()->json([
+             'octavos' => $eliminatoriasOctavos->values(),
             'cuartos' => $eliminatoriasCuartos->values(),
             'semis' => $eliminatoriasSemis->values(),
             'final' => $eliminatoriasFinal->values(),
@@ -165,6 +175,8 @@ class EliminatoriaController extends Controller
      */
     public function destroy($id)
     {
-        //
+         $eliminatoria = Eliminatoria::findOrFail($id);  
+        $eliminatoria->delete();
+        return response()->json(['message' => 'eliminatoria eliminada correctamente']);
     }
 }

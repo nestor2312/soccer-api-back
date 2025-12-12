@@ -9,11 +9,11 @@ class Grupos extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nombre','num_clasificados'];
+    protected $fillable = ['nombre','num_clasificados','subcategoria_id'];
 
     public function equipos()
     {
-        return $this->hasMany(Equipo::class);
+        return $this->hasMany(Equipo::class, 'grupo_id');
     }
 
     public function categoria()
@@ -23,7 +23,7 @@ class Grupos extends Model
 
     public function subcategoria()
       {
-          return $this->belongsTo(SubCategory::class); 
+          return $this->belongsTo(SubCategory::class, 'subcategoria_id'); 
       }
 
 

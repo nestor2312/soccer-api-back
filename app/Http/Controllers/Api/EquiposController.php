@@ -28,7 +28,7 @@ class EquiposController extends Controller
         // $equipos = Equipo::all();
         // return $equipos ;
 
-                $equipos = Equipo::with('grupo')->orderBy('id', 'desc')->paginate(10); 
+                $equipos = Equipo::with('grupo.subcategoria.categoria.torneo')->orderBy('id', 'desc')->paginate(10); 
       
         return $equipos;
 
@@ -42,12 +42,14 @@ class EquiposController extends Controller
             'nombre' => 'required|string|max:255',
             'grupo_id' => 'required|integer|exists:grupos,id',
             'archivo' => 'nullable|file|image|max:2048', 
+             'color_hover' => 'nullable|string',
         ]);
     
         // Creando el nuevo equipo
         $equipo = new Equipo();
         $equipo->nombre = $request->nombre;  // Usando el método $request->nombre
         $equipo->grupo_id = $request->grupo_id; // Usando el método $request->grupo_id
+         $equipo->color_hover = $request->color_hover;
         
         // Verificando si se subió un archivo
         if ($request->hasFile('archivo')) {
@@ -92,6 +94,7 @@ class EquiposController extends Controller
         $request->validate([
             'grupo_id' => 'required|exists:grupos,id',
             'nombre' => 'required|string|max:255',
+             'color_hover' => 'nullable|string',
             'archivo' => [
                 'nullable',
                 'string',
@@ -103,6 +106,7 @@ class EquiposController extends Controller
         // Actualizar los datos del equipo
         $equipo->nombre = $request->nombre;
         $equipo->grupo_id = $request->grupo_id;
+          $equipo->color_hover = $request->color_hover;
         // Verificar si se ha recibido un archivo en base64
         if ($request->has('archivo')) {
             // Eliminar el archivo anterior si existe

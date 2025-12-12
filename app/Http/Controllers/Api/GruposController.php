@@ -14,23 +14,33 @@ class GruposController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function gruposXsubcategoria($subcategoriaId)
-     {
-         $grupos = Grupos::where('subcategoria_id', $subcategoriaId)->get();
-         return response()->json($grupos);
-     }
+   public function gruposXsubcategoria($subcategoriaId)
+{
+    try {
+        $grupos = Grupos::with(['equipos', 'subcategoria.categoria.torneo'])
+            ->where('subcategoria_id', $subcategoriaId)
+            ->get();
+
+        return response()->json($grupos);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+}
+
      
 
     public function index()
     {
-        $grupos = Grupos::with('subcategoria')->orderBy('id', 'desc')->get(); 
+        $grupos = Grupos::with('subcategoria.categoria.torneo')->orderBy('id', 'desc')->get(); 
         // $grupos = Grupos::all();
         return $grupos;
     }
 
     public function Admin()
     {
-        $grupos = Grupos::with('subcategoria')->orderBy('id', 'desc')->paginate(10); 
+        $grupos = Grupos::with('subcategoria.categoria.torneo')->orderBy('id', 'desc')->paginate(10); 
         // $categorias = Category::where('torneo_id', $torneoId)->get();
         return response()->json($grupos);
     }

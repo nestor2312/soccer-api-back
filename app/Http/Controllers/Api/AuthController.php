@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeMail;
+use App\Mail\endDemoMail;
+use Illuminate\Support\Facades\Log; 
 
 class AuthController extends Controller
 {
@@ -38,6 +42,13 @@ class AuthController extends Controller
 
     public function register(Request $request)
 {
+
+$userCount = User::count();
+ if ($userCount >= 2) {
+   return response()->json(
+    [ 'message' => 'Solo se puede registrar un usuario' ], 400);
+   }
+
     $request->validate([
         'name' => 'required|string|max:255',
         'email' => 'required|string|email|max:255|unique:users',
@@ -50,9 +61,17 @@ class AuthController extends Controller
         'password' => Hash::make($request->password),
     ]);
 
+     // ✅ Envía el correo después de crear el usuario
+    Mail::to($user->email)->send(new WelcomeMail($user));
+
+Mail::to($user->email)->later(now()->addMinutes(5), new endDemoMail($user));
+
     $token = $user->createToken('authToken')->plainTextToken;
 
-    return response()->json(['token' => $token], 201);
+    return response()->json([
+      'token' => $token,
+      'message' => 'Usuario registrado correctamente',
+      'user' => $user], 201);
 }
 
 }

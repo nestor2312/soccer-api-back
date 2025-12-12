@@ -213,8 +213,7 @@ public function ClasificacionInicioPorSubcategoria($subcategoriaId)
 
 public function Admin()
 {
-    $subcategorias = SubCategory::with('categoria')->orderBy('id', 'desc')->get();
-    // $categorias = Category::where('torneo_id', $torneoId)->get();
+    $subcategorias = SubCategory::with('categoria.torneo')->get();
     return response()->json($subcategorias);
 }
 

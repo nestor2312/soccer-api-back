@@ -52,7 +52,12 @@ class PartidosController extends Controller
      */
     public function show($id)
     {
-        //
+      $partido = Partido::with([
+        'equipoA.grupo.subcategoria.categoria.torneo',
+        'equipoB.grupo.subcategoria.categoria.torneo'
+    ])->findOrFail($id);
+
+    return response()->json($partido);
     }
 
     /**
