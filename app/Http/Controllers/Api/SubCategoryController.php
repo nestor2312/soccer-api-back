@@ -12,6 +12,8 @@ use App\Models\Player;
 use Illuminate\Support\Facades\DB;
 class SubCategoryController extends Controller
 {
+
+    protected $table = 'subcategories';
     /**
      * Display a listing of the resource.
      *
