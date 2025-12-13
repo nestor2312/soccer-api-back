@@ -5,16 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SubCategory extends Model
-
+class SubCategoty extends Model
 {
     use HasFactory;
-    //  public function grupos()
-    // {
-    //     return $this->hasMany(Grupos::class);
-    // }
-
-  
 
     public function equipos()
     {
@@ -30,4 +23,7 @@ class SubCategory extends Model
     {
         return $this->hasMany(Eliminatoria::class);
     }
+
+
+
 }
