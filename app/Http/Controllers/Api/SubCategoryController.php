@@ -277,7 +277,7 @@ public function Admin()
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    
+    // b
     {
         $subcategoria = SubCategory::findOrFail($id);  
         $subcategoria->delete();
