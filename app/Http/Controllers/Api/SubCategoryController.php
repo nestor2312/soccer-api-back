@@ -25,7 +25,7 @@ class SubCategoryController extends Controller
 
     public function paginador()
     {
-        $subcategorias = SubCategory::with('categoria')->orderBy('id', 'desc')->paginate(10); 
+        $subcategorias = subcategogy::with('categoria')->orderBy('id', 'desc')->paginate(10); 
         return $subcategorias;
     }
 
@@ -225,7 +225,7 @@ public function Admin()
      */
     public function store(Request $request)
     {
-        $subcategoria = new SubCategory();
+        $subcategoria = new Subcategory();
         $subcategoria -> categoria_id = $request->get('categoria_id');
         $subcategoria -> nombre = $request->get('nombre');
         
