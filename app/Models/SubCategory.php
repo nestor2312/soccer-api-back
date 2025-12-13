@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SubCategoty extends Model
+class SubCategory extends Model
 {
     use HasFactory;
 
-    public function equipos()
+      public function equipos()
     {
         return $this->hasManyThrough(Equipo::class, Grupos::class, 'subcategoria_id', 'grupo_id');
     }
@@ -23,7 +23,4 @@ class SubCategoty extends Model
     {
         return $this->hasMany(Eliminatoria::class);
     }
-
-
-
 }
