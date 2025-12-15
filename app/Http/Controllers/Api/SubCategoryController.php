@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\SubCategory;
+use App\Models\Subcategory;
 use App\Models\Partido;
 use App\Models\Equipo;
 use App\Models\Grupos;
 use App\Models\Player;
+
+
+
 use Illuminate\Support\Facades\DB;
 class SubCategoryController extends Controller
 {
@@ -21,13 +24,13 @@ class SubCategoryController extends Controller
      */
     public function index($categoriaId)
     {
-        $subcategorias = SubCategory::where('categoria_id', $categoriaId)->get();
+        $subcategorias = Subcategory::where('categoria_id', $categoriaId)->get();
     return response()->json($subcategorias);
     }
 
     public function paginador()
     {
-        $subcategorias = SubCategory::with('categoria')->orderBy('id', 'desc')->paginate(10); 
+        $subcategorias = Subcategory::with('categoria')->orderBy('id', 'desc')->paginate(10); 
         return $subcategorias;
     }
 
@@ -85,16 +88,28 @@ public function jugadoresPorSubcategoria($subcategoriaId)
     return response()->json($jugadores);
 }
 
-public function jugadoresPorSubcategoriaPaginador($subcategoriaId)
+
+public function jugadoresPorSubcategoriaPaginador(Request $request, $subcategoriaId)
 {
-    // Obtener los jugadores de los equipos pertenecientes a la subcategoría
     $jugadores = Player::whereHas('equipo.grupo', function ($query) use ($subcategoriaId) {
         $query->where('subcategoria_id', $subcategoriaId);
     })
-    ->with('equipo')->paginate(9);
+    ->when($request->filled('equipo'), function ($q) use ($request) {
+        $q->where('equipo_id', $request->equipo);
+    })
+    ->with('equipo')
+    ->paginate(9);
 
-    return response()->json($jugadores);
+    $equipos = Equipo::whereHas('grupo', function ($query) use ($subcategoriaId) {
+        $query->where('subcategoria_id', $subcategoriaId);
+    })->get();
+
+    return response()->json([
+        'jugadores' => $jugadores,
+        'equipos' => $equipos
+    ]);
 }
+
 
 public function partidosPorSubcategoria($subcategoriaId)
 {
@@ -215,7 +230,7 @@ public function ClasificacionInicioPorSubcategoria($subcategoriaId)
 
 public function Admin()
 {
-    $subcategorias = SubCategory::with('categoria.torneo')->get();
+    $subcategorias = Subcategory::with('categoria.torneo')->get();
     return response()->json($subcategorias);
 }
 
@@ -227,7 +242,7 @@ public function Admin()
      */
     public function store(Request $request)
     {
-        $subcategoria = new SubCategory();
+        $subcategoria = new Subcategory();
         $subcategoria -> categoria_id = $request->get('categoria_id');
         $subcategoria -> nombre = $request->get('nombre');
         
@@ -242,7 +257,7 @@ public function Admin()
      */
     public function show($subcategoriaId)
     {
-        $subcategoria = SubCategory::with('grupos.equipos')
+        $subcategoria = Subcategory::with('grupos.equipos')
                         ->find($subcategoriaId);
         return response()->json($subcategoria);
     }
@@ -256,7 +271,7 @@ public function Admin()
      */
     public function update(Request $request, $id)
     {
-        $subcategoria = SubCategory::find($id);
+        $subcategoria = Subcategory::find($id);
 
         // Verificar si la subcategoria existe
         if (!$subcategoria) {
@@ -281,7 +296,7 @@ public function Admin()
     public function destroy($id)
     // b
     {
-        $subcategoria = SubCategory::findOrFail($id);  
+        $subcategoria = Subcategory::findOrFail($id);  
         $subcategoria->delete();
         return response()->json(['message' => 'subcategoria eliminada correctamente']);
     }
