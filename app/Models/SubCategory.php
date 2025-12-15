@@ -9,7 +9,7 @@ class Subcategory extends Model
 {
     use HasFactory;
 
-          public function equipos()
+            public function equipos()
     {
         return $this->hasManyThrough(Equipo::class, Grupos::class, 'subcategoria_id', 'grupo_id');
     }
@@ -19,7 +19,7 @@ class Subcategory extends Model
         return $this->belongsTo(Category::class, 'categoria_id');
     }
 
-    public function eliminatorias()
+   public function eliminatorias()
     {
         return $this->hasMany(Eliminatoria::class);
     }
