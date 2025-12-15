@@ -30,6 +30,8 @@ class SubCategoryController extends Controller
         $subcategorias = Subcategory::with('categoria')->orderBy('id', 'desc')->paginate(10); 
         return $subcategorias;
     }
+    // s
+    
 
 
     public function indexPorSubcategoria($subcategoriaId)
