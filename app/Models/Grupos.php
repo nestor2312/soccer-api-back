@@ -23,7 +23,7 @@ class Grupos extends Model
 
     public function subcategoria()
       {
-          return $this->belongsTo(SubCategory::class, 'subcategoria_id'); 
+          return $this->belongsTo(Subcategory::class, 'subcategoria_id'); 
       }
 
 
