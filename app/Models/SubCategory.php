@@ -9,6 +9,8 @@ class Subcategory extends Model
 {
     use HasFactory;
 
+     protected $table = 'subcategories';
+
             public function equipos()
     {
         return $this->hasManyThrough(Equipo::class, Grupos::class, 'subcategoria_id', 'grupo_id');
