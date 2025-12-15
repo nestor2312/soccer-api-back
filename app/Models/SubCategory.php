@@ -26,3 +26,4 @@ class Subcategory extends Model
         return $this->hasMany(Eliminatoria::class);
     }
 }
+// s
