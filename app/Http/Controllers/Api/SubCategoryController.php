@@ -9,9 +9,6 @@ use App\Models\Partido;
 use App\Models\Equipo;
 use App\Models\Grupos;
 use App\Models\Player;
-
-
-
 use Illuminate\Support\Facades\DB;
 class SubCategoryController extends Controller
 {
@@ -87,6 +84,17 @@ public function jugadoresPorSubcategoria($subcategoriaId)
 
     return response()->json($jugadores);
 }
+
+// public function jugadoresPorSubcategoriaPaginador($subcategoriaId)
+// {
+//     // Obtener los jugadores de los equipos pertenecientes a la subcategoría
+//     $jugadores = Player::whereHas('equipo.grupo', function ($query) use ($subcategoriaId) {
+//         $query->where('subcategoria_id', $subcategoriaId);
+//     })
+//     ->with('equipo')->paginate(9);
+
+//     return response()->json($jugadores);
+// }
 
 
 public function jugadoresPorSubcategoriaPaginador(Request $request, $subcategoriaId)
