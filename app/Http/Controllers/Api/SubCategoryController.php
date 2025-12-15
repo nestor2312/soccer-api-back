@@ -31,7 +31,7 @@ class SubCategoryController extends Controller
         return $subcategorias;
     }
     // s
-    
+
 
 
     public function indexPorSubcategoria($subcategoriaId)
