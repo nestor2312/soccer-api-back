@@ -84,6 +84,8 @@ public function jugadoresPorSubcategoria($subcategoriaId)
 
     return response()->json($jugadores);
 }
+// d
+
 
 // public function jugadoresPorSubcategoriaPaginador($subcategoriaId)
 // {
