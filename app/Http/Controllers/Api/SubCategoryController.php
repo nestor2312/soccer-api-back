@@ -89,38 +89,38 @@ public function jugadoresPorSubcategoria($subcategoriaId)
 // d
 
 
-public function jugadoresPorSubcategoriaPaginador($subcategoriaId)
-{
-    // Obtener los jugadores de los equipos pertenecientes a la subcategoría
-    $jugadores = Player::whereHas('equipo.grupo', function ($query) use ($subcategoriaId) {
-        $query->where('subcategoria_id', $subcategoriaId);
-    })
-    ->with('equipo')->paginate(9);
-
-    return response()->json($jugadores);
-}
-
-
-// public function jugadoresPorSubcategoriaPaginador(Request $request, $subcategoriaId)
+// public function jugadoresPorSubcategoriaPaginador($subcategoriaId)
 // {
+//     // Obtener los jugadores de los equipos pertenecientes a la subcategoría
 //     $jugadores = Player::whereHas('equipo.grupo', function ($query) use ($subcategoriaId) {
 //         $query->where('subcategoria_id', $subcategoriaId);
 //     })
-//     ->when($request->filled('equipo'), function ($q) use ($request) {
-//         $q->where('equipo_id', $request->equipo);
-//     })
-//     ->with('equipo')
-//     ->paginate(9);
+//     ->with('equipo')->paginate(9);
 
-//     $equipos = Equipo::whereHas('grupo', function ($query) use ($subcategoriaId) {
-//         $query->where('subcategoria_id', $subcategoriaId);
-//     })->get();
-
-//     return response()->json([
-//         'jugadores' => $jugadores,
-//         'equipos' => $equipos
-//     ]);
+//     return response()->json($jugadores);
 // }
+
+
+public function jugadoresPorSubcategoriaPaginador(Request $request, $subcategoriaId)
+{
+    $jugadores = Player::whereHas('equipo.grupo', function ($query) use ($subcategoriaId) {
+        $query->where('subcategoria_id', $subcategoriaId);
+    })
+    ->when($request->filled('equipo'), function ($q) use ($request) {
+        $q->where('equipo_id', $request->equipo);
+    })
+    ->with('equipo')
+    ->paginate(9);
+
+    $equipos = Equipo::whereHas('grupo', function ($query) use ($subcategoriaId) {
+        $query->where('subcategoria_id', $subcategoriaId);
+    })->get();
+
+    return response()->json([
+        'jugadores' => $jugadores,
+        'equipos' => $equipos
+    ]);
+}
 
 
 public function partidosPorSubcategoria($subcategoriaId)
