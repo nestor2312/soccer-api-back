@@ -26,7 +26,7 @@
     
     <!-- ENCABEZADO -->
     <div style="background:linear-gradient(180deg, #00BF63 0%, #09537E 100%); color:#fff; text-align:center; padding:20px;">
-      <img src="./img/group 3584 (2).svg" alt="Logo" style="width:180px; filter:drop-shadow(1px 1px 2px #f4ebeb); margin-bottom:10px;" />
+      <img src="https://landing-pi-three-57.vercel.app/Frame_49.png" alt="Logo" style="width:180px; filter:drop-shadow(1px 1px 2px #f4ebeb); margin-bottom:10px;" />
       {{-- <img src="https://tu-dominio.com/img/logo.svg" alt="Logo" style="width:180px; filter:drop-shadow(1px 1px 2px #f4ebeb); margin-bottom:10px;"> --}}
       <h2 style="margin:0; font-weight:600;">¡Bienvenido a Fubol!</h2>
     </div>
@@ -55,7 +55,7 @@
         <li>📷 Subir logos e imágenes personalizadas.</li>
       </ul>
 
-      <a href="{{ url('http://react-soccer.s3-website.us-east-2.amazonaws.com/login') }}" 
+      <a href="{{ url('https://fubolzona.com/login') }}" 
          style="display:inline-block; background-color:#00BF63; color:#fff; text-decoration:none; padding:12px 25px; border-radius:6px; font-weight:bold; box-shadow:0 3px 6px rgba(0,0,0,0.2);">
          Ir al fubol
       </a>
@@ -69,7 +69,7 @@
     <!-- PIE DE PÁGINA -->
     <div style="background-color:#d7d7d7; text-align:center; padding:15px; font-size:12px; color:#888;">
       © {{ date('Y') }} Fubol — Todos los derechos reservados.<br>
-      <a href="https://landing-pi-three-57.vercel.app/" style="color:#00BF63; text-decoration:none;">Visita nuestro sitio</a>
+      <a href="https://fubolzona.com/" style="color:#00BF63; text-decoration:none;">Visita nuestro sitio</a>
     </div>
   </div>
 </body>

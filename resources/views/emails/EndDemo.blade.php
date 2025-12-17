@@ -26,7 +26,7 @@
     
     <!-- ENCABEZADO -->
     <div style="background:linear-gradient(180deg, #00BF63 0%, #09537E 100%); color:#fff; text-align:center; padding:20px;">
-      <img src="./img/group 3584 (2).svg" alt="Logo" style="width:180px; filter:drop-shadow(1px 1px 2px #f4ebeb); margin-bottom:10px;" />
+      <img src="https://landing-pi-three-57.vercel.app/Frame_49.png" alt="Logo" style="width:180px; filter:drop-shadow(1px 1px 2px #f4ebeb); margin-bottom:10px;" />
       {{-- <img src="https://tu-dominio.com/img/logo.svg" alt="Logo" style="width:180px; filter:drop-shadow(1px 1px 2px #f4ebeb); margin-bottom:10px;"> --}}
       <h2 style="margin:0; font-weight:600;">Tu periodo de prueba está por finalizar</h2>
     </div>
@@ -42,7 +42,7 @@
     
     margin-bottom: 10px;
 ">
-    Hola {{$usuario->name}}
+    Hola{{$usuario->name}}
 </h1>
       
       <h2 style="font-size:28px; margin:0;">👋</h2>
@@ -50,14 +50,14 @@
               <p>Tu prueba gratuita finalizará el <strong>{{$fechaFin}}</strong>. Para seguir disfrutando de todas las funciones, te invitamos a elegir un plan antes de esa fecha.</p>
      
      <p style="text-align:center; margin:30px 0;">
-                <a href="https://landing-pi-three-57.vercel.app/" 
+                <a href="https://fubolzona.com" 
                    style="background-color:#1e90ff; color:#ffffff; padding:12px 25px; text-decoration:none; border-radius:5px; font-weight:bold;">
                    Ver planes
                 </a>
               </p>
 
       <p>Si ya elegiste un plan, ¡gracias por continuar con nosotros! 💪 <br>
-              Si tienes dudas o necesitas ayuda, contáctanos a <span style="color:#09537e;">correo@tsso.com</span>.</p>
+              Si tienes dudas o necesitas ayuda, contáctanos a <span style="color:#09537e;">contacto@fubolzona.com</span>.</p>
 
       
 
@@ -70,7 +70,7 @@
     <!-- PIE DE PÁGINA -->
     <div style="background-color:#d7d7d7; text-align:center; padding:15px; font-size:12px; color:#888;">
       © {{ date('Y') }} Fubol — Todos los derechos reservados.<br>
-      <a href="https://landing-pi-three-57.vercel.app/" style="color:#00BF63; text-decoration:none;">Visita nuestro sitio</a>
+      <a href="https://fubolzona.com" style="color:#00BF63; text-decoration:none;">Visita nuestro sitio</a>
     </div>
   </div>
 </body>
