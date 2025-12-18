@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\WelcomeMail;
-use App\Mail\endDemoMail;
+// use Illuminate\Support\Facades\Mail;
+// use App\Mail\WelcomeMail;
+// use App\Mail\endDemoMail;
 use Illuminate\Support\Facades\Log; 
 
 class AuthController extends Controller
@@ -62,9 +62,9 @@ $userCount = User::count();
     ]);
 
      // ✅ Envía el correo después de crear el usuario
-    Mail::to($user->email)->send(new WelcomeMail($user));
-
-Mail::to($user->email)->later(now()->addMinutes(5), new endDemoMail($user));
+    // Mail::to($user->email)->send(new WelcomeMail($user));
+// ddd
+// Mail::to($user->email)->later(now()->addMinutes(5), new endDemoMail($user));
 
     $token = $user->createToken('authToken')->plainTextToken;
 
