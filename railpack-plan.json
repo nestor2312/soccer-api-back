@@ -1,9 +1,5 @@
 {
-  "providers": {
-    "php": {
-      "disableLaravelOptimizations": true
-    }
-  },
+  "disableLaravelOptimizations": true,
   "phases": {
     "build": {
       "cmds": [
