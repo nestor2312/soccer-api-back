@@ -9,7 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeMail;
-use App\Mail\endDemoMail;
+use App\Mail\EndDemoMail;
 use Illuminate\Support\Facades\Log; 
 
 class AuthController extends Controller
