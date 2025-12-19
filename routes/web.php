@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Mail\WelcomeMail;
+use App\Mail\EndDemoMail;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 /*
