@@ -49,6 +49,11 @@ Route::get('/test-mail', function () {
 //     return "✅ Correo de prueba enviado correctamente";
 // });
 
+Route::get('/test-maill', function () {
+    Mail::to('nc6925935@gmail.com')->send(new EndDemoMail());
+    return 'enviado';
+});
+
 
 Route::get('/', function () {
     return view('welcome');
