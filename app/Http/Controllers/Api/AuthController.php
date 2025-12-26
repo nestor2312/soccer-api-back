@@ -64,7 +64,7 @@ $userCount = User::count();
      // ✅ Envía el correo después de crear el usuario
     Mail::to($user->email)->send(new WelcomeMail($user));
 
-Mail::to($user->email)->later(now()->addMinutes(5), new endDemoMail($user));
+Mail::to($user->email)->later(now()->addDays(10), new endDemoMail($user));
 
     $token = $user->createToken('authToken')->plainTextToken;
 
