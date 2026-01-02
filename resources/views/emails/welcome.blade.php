@@ -26,7 +26,7 @@
     
     <!-- ENCABEZADO -->
     <div style="background:linear-gradient(180deg, #00BF63 0%, #09537E 100%); color:#fff; text-align:center; padding:20px;">
-      <img src="https://landing-pi-three-57.vercel.app/Frame_49.png" alt="Logo" style="width:180px; filter:drop-shadow(1px 1px 2px #f4ebeb); margin-bottom:10px;" />
+      <img src="https://landing-pi-three-57.vercel.app/Logo.png" alt="Logo" style="width:180px; filter:drop-shadow(1px 1px 2px #f4ebeb); margin-bottom:10px;" />
       {{-- <img src="https://tu-dominio.com/img/logo.svg" alt="Logo" style="width:180px; filter:drop-shadow(1px 1px 2px #f4ebeb); margin-bottom:10px;"> --}}
       <h2 style="margin:0; font-weight:600;">¡Bienvenido a Fubol!</h2>
     </div>

@@ -29,5 +29,10 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+ 'resend' => [
+        'key' => env('re_h1qB8EXn_G6tPLZZDRqSyWLF9Eu1oifMN'),
+    ],
 
+    
 ];
+
