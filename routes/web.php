@@ -68,6 +68,10 @@ Route::get('/b', function () {
     return view('emails.welcome');
 });
 
+Route::get('/c', function () {
+    return view('emails.Activeplan');
+});
+
 // 
 
 Auth::routes();
