@@ -41,7 +41,7 @@
         </ul>
       </div>
 
-      <a href="{{ url('/') }}" class="boton" 
+      <a href="{{ url('https://campeonatos.fubolzona.com/') }}" class="boton" 
          style="display:inline-block; background-color:#00BF63; color:#ffffff; padding:15px 35px; text-decoration:none; border-radius:8px; font-weight:bold; font-size: 16px; box-shadow:0 4px 10px rgba(0,191,99,0.3);">
          COMENZAR A ORGANIZAR
       </a>
