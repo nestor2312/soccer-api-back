@@ -17,7 +17,7 @@
 <div style="max-width:600px; width:98%; background-color:#ffffff; border:#d2d2d2 0.04rem solid; margin:30px auto; border-radius:12px; overflow:hidden; box-shadow:0 5px 15px rgba(0,0,0,0.05);">
     
     <div style="background:linear-gradient(180deg, #00BF63 0%, #09537E 100%); color:#fff; text-align:center; padding:30px 20px;">
-      <img src="https://landing-pi-three-57.vercel.app/Logo.png" alt="Fubol Logo" style="width:160px; filter:drop-shadow(1px 1px 2px rgba(0,0,0,0.2)); margin-bottom:15px;" />
+      <img src="https://fubolzona.com/Logo.png" alt="Fubol Logo" style="width:160px; filter:drop-shadow(1px 1px 2px rgba(0,0,0,0.2)); margin-bottom:15px;" />
       <h2 style="margin:0;  letter-spacing: 1px; font-weight:600;">¡BIENVENIDO A TU ESTADIO DIGITAL! 🏆</h2>
     </div>
 
