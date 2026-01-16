@@ -5,6 +5,7 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use App\Models\User;
@@ -28,6 +29,9 @@ class ActiveplanMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            // Forzamos el uso del subdominio verificado
+            from: new Address('contacto@mail.fubolzona.com', 'Fubol'), 
+           
             subject: '¡Bienvenido a Fubol! Todo listo para el pitazo inicial ⚽',
         );
     }
