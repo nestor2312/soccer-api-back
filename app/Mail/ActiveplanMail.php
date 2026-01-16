@@ -28,6 +28,7 @@ class ActiveplanMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            
             subject: '¡Bienvenido a Fubol! Todo listo para el pitazo inicial ⚽',
         );
     }
