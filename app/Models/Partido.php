@@ -19,4 +19,9 @@ class Partido extends Model
     {
         return $this->belongsTo(Equipo::class, 'equipoB_id');
     }
+
+    public function eventos()
+{
+    return $this->hasMany(EventoPartido::class);
+}
 }
