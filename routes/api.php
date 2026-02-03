@@ -21,7 +21,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\SubCategoryController;
 use App\Http\Controllers\Api\TorneoController;
 use App\Http\Controllers\Api\EliminatoriaController;
-
+use App\Http\Controllers\Api\EventoPartidoController;
 
 use App\Http\Controllers\Api\AuthController;
 /*
@@ -35,7 +35,15 @@ use App\Http\Controllers\Api\AuthController;
 // });
 
 
+// Ruta para obtener los jugadores del partido (La que te faltaba)
+Route::get('/partidos/{id}/jugadores', [EventoPartidoController::class, 'getJugadores']);
 
+// Rutas de eventos
+Route::get('/partidos/{id}/eventos', [EventoPartidoController::class, 'index']);
+Route::post('/partidos/{id}/eventos', [EventoPartidoController::class, 'store']);
+
+// Ruta para eliminar (opcional, para el botón handleDelete de React)
+Route::delete('/eventos/{id}', [EventoPartidoController::class, 'destroy']);
 
 
 Route::controller(GruposController::class)->group(function () {

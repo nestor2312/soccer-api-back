@@ -14,3 +14,4 @@ class Player extends Model
         return $this->belongsTo(Equipo::class,'equipo_id');
     }
 }
+// l 

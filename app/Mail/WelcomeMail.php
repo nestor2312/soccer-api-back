@@ -7,6 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\User; // <-- asegúrate de importar tu modelo
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Address;
 class WelcomeMail extends Mailable
 {
     use Queueable, SerializesModels;
@@ -24,6 +25,7 @@ class WelcomeMail extends Mailable
       public function envelope()
     {
         return new Envelope(
+              from: new Address('contacto@mail.fubolzona.com', 'Fubol'), 
             subject: '¡Bienvenido a Fubol!',
         );
     }

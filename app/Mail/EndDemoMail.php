@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Address;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Mail\Mailables\Envelope;
@@ -26,6 +27,7 @@ class EndDemoMail extends Mailable implements ShouldQueue
       public function envelope()
     {
         return new Envelope(
+              from: new Address('contacto@mail.fubolzona.com', 'Fubol'), 
             subject: '¡Tu periodo de prueba está por finalizar!',
         );
     }
