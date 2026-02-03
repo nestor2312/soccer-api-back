@@ -11,15 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('eventos_partido', function (Blueprint $table) {
-            $table->id();
-              $table->foreignId('partido_id')->constrained('partidos')->onDelete('cascade');
-        $table->foreignId('equipo_id')->constrained('equipos')->onDelete('cascade');
-        $table->foreignId('jugador_id')->constrained('jugadores')->onDelete('cascade');
-        $table->enum('tipo_evento', ['gol', 'asistencia', 'amarilla', 'roja']);
-        $table->string('minuto')->nullable();
-            $table->timestamps();
-        });
+        // Esta es la línea clave que evita el error 1050
+        if (!Schema::hasTable('eventos_partido')) {
+            Schema::create('eventos_partido', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('partido_id')->constrained('partidos')->onDelete('cascade');
+                $table->foreignId('equipo_id')->constrained('equipos')->onDelete('cascade');
+                // IMPORTANTE: Asegúrate de que tu tabla de jugadores se llame 'jugadores' y no 'players'
+                $table->foreignId('jugador_id')->constrained('players')->onDelete('cascade');
+                $table->enum('tipo_evento', ['gol', 'asistencia', 'amarilla', 'roja']);
+                $table->string('minuto')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**
