@@ -67,4 +67,11 @@ public function getJugadores($id)
     return response()->json($evento, 201);
 }
 
+  public function destroy($id)
+    {
+        $evento = EventoPartido::findOrFail($id);  
+        $evento->delete();
+        return response()->json(['message' => 'evento eliminado correctamente']);
+    }
+
 }
