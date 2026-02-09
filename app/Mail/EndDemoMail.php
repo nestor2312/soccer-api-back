@@ -27,7 +27,7 @@ class EndDemoMail extends Mailable implements ShouldQueue
       public function envelope()
     {
         return new Envelope(
-              from: new Address('contacto@mail.fubolzona.com', 'Fubol'), 
+              from: new Address('contacto@demo.fubolzona.com', 'Fubol'), 
             subject: '¡Tu periodo de prueba está por finalizar!',
         );
     }

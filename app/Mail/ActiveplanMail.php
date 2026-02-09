@@ -30,7 +30,7 @@ class ActiveplanMail extends Mailable
     {
         return new Envelope(
              // Forzamos el uso del subdominio verificado
-            from: new Address('contacto@mail.fubolzona.com', 'Fubol'), 
+            from: new Address('contacto@demo.fubolzona.com', 'Fubol'), 
            
             subject: '¡Bienvenido a Fubol! Todo listo para el pitazo inicial ⚽',
         );
