@@ -97,7 +97,7 @@ return [
     */
     
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'contacto@mail.fubolzona.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'contacto@demo.fubolzona.com'),
         'name' => env('MAIL_FROM_NAME', 'Fubol'),
     ],
 
