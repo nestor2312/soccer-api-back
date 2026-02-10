@@ -4,7 +4,7 @@ return [
 
     'paths' => ['api/*', 'sanctum/csrf-cookie'],
     'allowed_methods' => ['*'],
-    'allowed_origins' => ['http://localhost:5173', 'https://liga-dorada-panama-fubol.vercel.app', ],  // La dirección de tu aplicación React
+    'allowed_origins' => ['http://localhost:5173', 'link', ],  // La dirección de tu aplicación React
 
     'allowed_origins_patterns' => [],
     'allowed_headers' => ['*'],
