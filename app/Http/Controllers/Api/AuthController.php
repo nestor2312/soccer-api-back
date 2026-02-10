@@ -13,7 +13,7 @@ use App\Mail\WelcomeMail;
 use Illuminate\Support\Facades\Log; 
 
 class AuthController extends Controller
-# liga dorada
+# copamirry torneo elite
 {
     public function login(Request $request)
     {
