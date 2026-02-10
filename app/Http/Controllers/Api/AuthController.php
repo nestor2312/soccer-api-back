@@ -9,10 +9,11 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeMail;
-use App\Mail\EndDemoMail;
+
 use Illuminate\Support\Facades\Log; 
 
 class AuthController extends Controller
+# liga dorada
 {
     public function login(Request $request)
     {
@@ -64,7 +65,7 @@ $userCount = User::count();
      // ✅ Envía el correo después de crear el usuario
     Mail::to($user->email)->send(new WelcomeMail($user));
 
-Mail::to($user->email)->later(now()->addDays(10), new endDemoMail($user));
+// Mail::to($user->email)->later(now()->addDays(10), new endDemoMail($user));
 
     $token = $user->createToken('authToken')->plainTextToken;
 
