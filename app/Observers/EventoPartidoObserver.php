@@ -19,8 +19,8 @@ class EventoPartidoObserver
 
     public function updated(EventoPartido $evento)
     {
-        if ($evento->isDirty('tipo')) {
-            $originalTipo = $evento->getOriginal('tipo');
+        if ($evento->isDirty('tipo_evento')) {
+            $originalTipo = $evento->getOriginal('tipo_evento');
 
             $this->restarTipo($evento->jugador_id, $originalTipo);
             $this->sumar($evento);
@@ -29,27 +29,30 @@ class EventoPartidoObserver
 
     private function sumar($evento)
     {
-        $jugador = Player::find($evento->jugador_id);
+        if (!$evento->tipo_evento) return;
 
+        $jugador = Player::find($evento->jugador_id);
         if (!$jugador) return;
 
-        match ($evento->tipo) {
+        match ($evento->tipo_evento) {
             'gol' => $jugador->increment('goles'),
             'asistencia' => $jugador->increment('asistencias'),
             'amarilla' => $jugador->increment('card_amarilla'),
             'roja' => $jugador->increment('card_roja'),
+            default => null
         };
     }
 
     private function restar($evento)
     {
-        $this->restarTipo($evento->jugador_id, $evento->tipo);
+        $this->restarTipo($evento->jugador_id, $evento->tipo_evento);
     }
 
     private function restarTipo($jugadorId, $tipo)
     {
-        $jugador = Player::find($jugadorId);
+        if (!$tipo) return;
 
+        $jugador = Player::find($jugadorId);
         if (!$jugador) return;
 
         match ($tipo) {
@@ -57,6 +60,7 @@ class EventoPartidoObserver
             'asistencia' => $jugador->decrement('asistencias'),
             'amarilla' => $jugador->decrement('card_amarilla'),
             'roja' => $jugador->decrement('card_roja'),
+            default => null
         };
     }
 }
