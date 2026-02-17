@@ -78,10 +78,10 @@ class PartidosController extends Controller
         $validatedData = $request->validate([
             'equipoA_id' => 'required|integer|exists:equipos,id',
             'equipoB_id' => 'required|integer|exists:equipos,id',
-            'marcador1' => '|integer|min:0',
-            'marcador2' => '|integer|min:0',
-            'fecha' => 'required',
-            'hora' => 'required',
+            'marcador1' => 'nullable|integer|min:0',
+            'marcador2' => 'nullable|integer|min:0',
+            'fecha' => 'nullable',
+            'hora' => 'nullable',
         ]);
     
         $partido->update($validatedData);

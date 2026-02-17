@@ -17,7 +17,6 @@ return new class extends Migration
                 $table->id();
                 $table->foreignId('partido_id')->constrained('partidos')->onDelete('cascade');
                 $table->foreignId('equipo_id')->constrained('equipos')->onDelete('cascade');
-                // IMPORTANTE: Asegúrate de que tu tabla de jugadores se llame 'jugadores' y no 'players'
                 $table->foreignId('jugador_id')->constrained('players')->onDelete('cascade');
                 $table->enum('tipo_evento', ['gol', 'asistencia', 'amarilla', 'roja']);
                 $table->string('minuto')->nullable();

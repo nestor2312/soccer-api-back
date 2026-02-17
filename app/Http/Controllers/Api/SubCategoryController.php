@@ -162,8 +162,7 @@ public function ClasificacionPorSubcategoria($subcategoriaId)
 
     foreach ($grupos as $grupo) {
         // Consulta para obtener los equipos de cada grupo con estadísticas en 0 si no han jugado partidos
-        $equipos = DB::select('
-         SELECT 
+        $equipos = DB::select('SELECT 
     e.id,
     e.nombre,
     e.archivo,
@@ -230,8 +229,7 @@ public function ClasificacionInicioPorSubcategoria($subcategoriaId)
     // Recorrer los grupos y obtener los equipos con sus estadísticas
     foreach ($grupos as $grupo) {
         // Consulta para obtener los equipos de cada grupo
-        $equipos = DB::select('
-       SELECT 
+        $equipos = DB::select('SELECT 
     e.id,
     e.nombre,
     e.archivo,

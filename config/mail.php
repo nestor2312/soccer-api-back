@@ -95,9 +95,9 @@ return [
     | used globally for all e-mails that are sent by your application.
     |
     */
-
+    
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'contacto@mail.fubolzona.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'contacto@demo.fubolzona.com'),
         'name' => env('MAIL_FROM_NAME', 'Fubol'),
     ],
 
@@ -121,3 +121,4 @@ return [
     ],
 
 ];
+// dd 
