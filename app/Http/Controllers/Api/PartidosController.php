@@ -40,6 +40,8 @@ class PartidosController extends Controller
         $partido -> equipoB()->associate( $request->equipoB_id );
         $partido -> fecha = $request->fecha;
         $partido -> hora = $request->hora;
+           $partido -> jornada = $request->jornada;
+      
         $partido ->save();
         return response()->json($partido, 201);
     }
@@ -82,6 +84,7 @@ class PartidosController extends Controller
             'marcador2' => 'nullable|integer|min:0',
             'fecha' => 'nullable',
             'hora' => 'nullable',
+            'jornada' => 'nullable',
         ]);
     
         $partido->update($validatedData);
