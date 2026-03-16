@@ -12,16 +12,36 @@ class PartidosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        // $partidos = Partido::all();
-        // return $partidos ;
+  public function index(Request $request)
+{
+    $partidos = Partido::with(['equipoA.grupo.subcategoria.categoria', 'equipoB'])
+        // Filtro por Torneo
+        ->when($request->filled('torneo_id'), function ($q) use ($request) {
+            $q->whereHas('equipoA.grupo.subcategoria.categoria', function($query) use ($request) {
+                $query->where('torneo_id', $request->torneo_id);
+            });
+        })
+        // Filtro por Categoría
+        ->when($request->filled('categoria_id'), function ($q) use ($request) {
+            $q->whereHas('equipoA.grupo.subcategoria', function($query) use ($request) {
+                $query->where('categoria_id', $request->categoria_id);
+            });
+        })
+        // Filtro por Subcategoría
+        ->when($request->filled('subcategoria_id'), function ($q) use ($request) {
+            $q->whereHas('equipoA.grupo', function($query) use ($request) {
+                $query->where('subcategoria_id', $request->subcategoria_id);
+            });
+        })
+        // Filtro por Jornada
+        ->when($request->filled('jornada'), function ($q) use ($request) {
+            $q->where('jornada', 'LIKE', '%' . $request->jornada . '%');
+        })
+        ->orderBy('id', 'desc')
+        ->paginate(10);
 
-        $partidos = Partido::with('equipoA','equipoB')->orderBy('id', 'desc')->paginate(10); 
-        return $partidos;
-
-        
-    }
+    return response()->json($partidos);
+}
 
     /**
      * Store a newly created resource in storage.
