@@ -12,16 +12,41 @@ class PartidosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        // $partidos = Partido::all();
-        // return $partidos ;
+public function index(Request $request)
+{
+    $query = Partido::with(['equipoA.grupo.subcategoria.categoria', 'equipoB']);
 
-        $partidos = Partido::with('equipoA','equipoB')->orderBy('id', 'desc')->paginate(10); 
-        return $partidos;
-
-        
+    // Filtro por Torneo
+    if ($request->filled('torneo_id')) {
+        $query->whereHas('equipoA.grupo.subcategoria.categoria', function($q) use ($request) {
+            $q->where('torneo_id', $request->torneo_id);
+        });
     }
+
+    // Filtro por Categoría
+    if ($request->filled('categoria_id')) {
+        $query->whereHas('equipoA.grupo.subcategoria', function($q) use ($request) {
+            $q->where('categoria_id', $request->categoria_id);
+        });
+    }
+
+    // Filtro por Subcategoría
+    if ($request->filled('subcategoria_id')) {
+        $query->whereHas('equipoA.grupo', function($q) use ($request) {
+            $q->where('subcategoria_id', $request->subcategoria_id);
+        });
+    }
+
+    // Filtro por Jornada (Corregido para que use la misma estructura de $query)
+    if ($request->filled('jornada')) {
+        $query->where('jornada', 'LIKE', '%' . $request->jornada . '%');
+    }
+
+    // Ejecutamos la consulta y paginamos
+    $partidos = $query->orderBy('id', 'desc')->paginate(10);
+
+    return response()->json($partidos);
+}
 
     /**
      * Store a newly created resource in storage.
@@ -40,6 +65,8 @@ class PartidosController extends Controller
         $partido -> equipoB()->associate( $request->equipoB_id );
         $partido -> fecha = $request->fecha;
         $partido -> hora = $request->hora;
+           $partido -> jornada = $request->jornada;
+      
         $partido ->save();
         return response()->json($partido, 201);
     }
@@ -78,10 +105,11 @@ class PartidosController extends Controller
         $validatedData = $request->validate([
             'equipoA_id' => 'required|integer|exists:equipos,id',
             'equipoB_id' => 'required|integer|exists:equipos,id',
-            'marcador1' => '|integer|min:0',
-            'marcador2' => '|integer|min:0',
-            'fecha' => 'required',
-            'hora' => 'required',
+            'marcador1' => 'nullable|integer|min:0',
+            'marcador2' => 'nullable|integer|min:0',
+            'fecha' => 'nullable',
+            'hora' => 'nullable',
+            'jornada' => 'nullable',
         ]);
     
         $partido->update($validatedData);

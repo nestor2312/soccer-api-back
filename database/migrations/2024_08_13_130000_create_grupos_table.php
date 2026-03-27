@@ -15,9 +15,7 @@ class CreateGruposTable extends Migration
     {
         Schema::create('grupos', function (Blueprint $table) {
             $table->id();
-
             $table->unsignedBigInteger('subcategoria_id');
-          
             $table->foreign('subcategoria_id')
       ->references('id')
       ->on('subcategories')
