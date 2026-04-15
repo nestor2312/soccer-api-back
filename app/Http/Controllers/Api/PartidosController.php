@@ -65,6 +65,7 @@ public function index(Request $request)
         $partido -> equipoB()->associate( $request->equipoB_id );
         $partido -> fecha = $request->fecha;
         $partido -> hora = $request->hora;
+           $partido -> sede = $request->sede;
            $partido -> jornada = $request->jornada;
       
         $partido ->save();
@@ -110,6 +111,8 @@ public function index(Request $request)
             'fecha' => 'nullable',
             'hora' => 'nullable',
             'jornada' => 'nullable',
+             'sede' => 'nullable',
+            
         ]);
     
         $partido->update($validatedData);

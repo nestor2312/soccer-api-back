@@ -20,7 +20,8 @@ class Eliminatoria extends Model
       'numPartido',
       'subcategoria_id',
       'tipo_eliminatoria',
-      'tipo_partido',];
+      'tipo_partido',
+      'nombre_fase',];
 
     public function equipoAa()
     {

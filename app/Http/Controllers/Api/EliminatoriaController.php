@@ -12,57 +12,43 @@ class EliminatoriaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
-        $eliminatorias = Eliminatoria::with('equipoAa', 'equipoB')->get();
-        
-         $eliminatoriasOctavos = $eliminatorias->filter(fn($eliminatoria) => $eliminatoria->numPartido == 1);
-        $eliminatoriasCuartos = $eliminatorias->filter(fn($eliminatoria) => $eliminatoria->numPartido == 2);
-        $eliminatoriasSemis = $eliminatorias->filter(fn($eliminatoria) => $eliminatoria->numPartido == 3);
-        $eliminatoriasFinal = $eliminatorias->filter(fn($eliminatoria) => $eliminatoria->numPartido == 4);
+public function index() {
+    $eliminatorias = Eliminatoria::with('equipoAa', 'equipoB')->get();
     
-        return response()->json([
-             'octavos' => $eliminatoriasOctavos->values(),
-            'cuartos' => $eliminatoriasCuartos->values(),
-            'semis' => $eliminatoriasSemis->values(),
-            'final' => $eliminatoriasFinal->values(),
-        ]);
-    }
+    // Agrupamos para que el frontend sepa separar las llaves
+    return response()->json(
+        $eliminatorias->groupBy(fn($item) => $item->nombre_fase ?? 'Principal')->map(fn($fase) => [
+            'octavos' => $fase->where('numPartido', 1)->values(),
+            'cuartos' => $fase->where('numPartido', 2)->values(),
+            'semis'   => $fase->where('numPartido', 3)->values(),
+            'final'   => $fase->where('numPartido', 4)->values(),
+           'tercer_puesto' => $fase->where('numPartido', 5)->values(),
+        ])
+    );
+}
 
     public function getEliminatoriasBySubcategoria($subcategoriaId)
-    {
-         // Obtener las eliminatorias de octavos de final
-        $eliminatoriasOctavos = Eliminatoria::with('equipoAa', 'equipoB')
-            ->where('subcategoria_id', $subcategoriaId)
-            ->where('numPartido', '1')
-            ->get();
-    
+{
+    $eliminatorias = Eliminatoria::with('equipoAa', 'equipoB')
+        ->where('subcategoria_id', $subcategoriaId)
+        ->get();
 
-        // Obtener las eliminatorias de cuartos de final
-        $eliminatoriasCuartos = Eliminatoria::with('equipoAa', 'equipoB')
-            ->where('subcategoria_id', $subcategoriaId)
-            ->where('numPartido', '2')
-            ->get();
-    
-        // Obtener las eliminatorias de semifinales
-        $eliminatoriasSemis = Eliminatoria::with('equipoAa', 'equipoB')
-            ->where('subcategoria_id', $subcategoriaId)
-            ->where('numPartido', '3')
-            ->get();
-    
-        // Obtener las eliminatorias de la final
-        $eliminatoriasFinal = Eliminatoria::with('equipoAa', 'equipoB')
-            ->where('subcategoria_id', $subcategoriaId)
-            ->where('numPartido', '4')
-            ->get();
-    
-        // Retornar los partidos organizados por fases en formato JSON
-        return response()->json([
-             'octavos' => $eliminatoriasOctavos->values(),
-            'cuartos' => $eliminatoriasCuartos->values(),
-            'semis' => $eliminatoriasSemis->values(),
-            'final' => $eliminatoriasFinal->values(),
-        ]);
-    }
+    // Esto crea dinámicamente "Principal", "Copa de Plata", etc.
+    $resultado = $eliminatorias->groupBy(fn($q) => $q->nombre_fase ?? 'Principal')
+        ->map(function($grupo) {
+            return [
+                'octavos' => $grupo->where('numPartido', 1)->values(),
+                'cuartos' => $grupo->where('numPartido', 2)->values(),
+                'semis'   => $grupo->where('numPartido', 3)->values(),
+                'final'   => $grupo->where('numPartido', 4)->values(),
+               'tercer_puesto' => $grupo->where('numPartido', 5)->values(),
+            ];
+        });
+
+    return response()->json($resultado);
+}
+
+
     
 
     /**
@@ -83,6 +69,7 @@ class EliminatoriaController extends Controller
                 'marcador2_vuelta' => 'nullable|integer',
                 'marcador1_penales' => 'nullable|integer',
                 'marcador2_penales' => 'nullable|integer',
+                'nombre_fase' => 'required|string',
                 'numPartido' => 'required|integer',
                 'subcategoria_id' => 'required|integer' ,
              'tipo_eliminatoria' => 'required|in:solo_ida,ida_vuelta,penales',
