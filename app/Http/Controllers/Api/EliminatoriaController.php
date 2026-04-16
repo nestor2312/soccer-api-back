@@ -118,6 +118,7 @@ public function index() {
             'marcador1_penales' => 'nullable|integer',
             'marcador2_penales' => 'nullable|integer',
             'numPartido' => 'required|integer',
+             'nombre_fase' => 'nullable|string',
             'subcategoria_id' => 'required|integer',
             'tipo_eliminatoria' => 'required|in:solo_ida,ida_vuelta,penales',
             'tipo_partido' => 'nullable|in:ida,vuelta'
