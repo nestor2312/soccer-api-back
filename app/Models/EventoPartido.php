@@ -11,11 +11,13 @@ class EventoPartido extends Model
       protected $table = 'eventos_partido';
 
     protected $fillable = [
-        'partido_id',
-        'equipo_id',
-        'jugador_id',
-        'tipo_evento',
-        'minuto'
+       'partido_id',
+    'eliminatoria_id',
+    'equipo_id',
+    'jugador_id',
+    'tipo_evento',
+    'instancia',
+    'minuto',
     ];
 
     public function partido() {
