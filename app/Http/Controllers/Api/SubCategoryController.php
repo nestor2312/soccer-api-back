@@ -137,6 +137,32 @@ public function partidosPorSubcategoria($subcategoriaId)
 }
 
 
+
+public function calendarioPorSubcategoria($subcategoriaId)
+{
+    $partidos = Partido::with(['equipoA', 'equipoB'])
+        ->where(function($q) use ($subcategoriaId) {
+            // Buscamos partidos donde el Equipo A pertenezca a la subcategoría
+            $q->whereHas('equipoA.grupo', function ($query) use ($subcategoriaId) {
+                $query->where('subcategoria_id', $subcategoriaId);
+            })
+            // O donde el Equipo B pertenezca a la subcategoría
+            ->orWhereHas('equipoB.grupo', function ($query) use ($subcategoriaId) {
+                $query->where('subcategoria_id', $subcategoriaId);
+            });
+        })
+        // Solo para debug, comenta la fecha:
+        // ->where('fecha', '>=', now()->subDay()->toDateString())
+        ->orderBy('fecha', 'asc')
+        ->orderBy('hora', 'asc')
+        ->get()
+        ->groupBy('fecha');
+
+    return response()->json($partidos);
+}
+
+
+
 public function partidosPorSubcategoriaPaginador($subcategoriaId)
 {
     $partidos = Partido::whereHas('equipoA.grupo', function ($query) use ($subcategoriaId) {

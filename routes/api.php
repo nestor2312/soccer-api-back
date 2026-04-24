@@ -142,6 +142,7 @@ Route::controller(SubCategoryController::class)->group(function () {
 Route::get('/subcategorias/{subcategoriaId}', [SubCategoryController::class, 'show']);
 Route::get('/partidos/subcategoria/{subcategoriaId}', [SubCategoryController::class, 'indexPorSubcategoria']);
 
+
 Route::controller(TorneoController::class)->group(function () {
     Route::get('/torneos', 'index')->name('torneo.index');
     Route::get('/torneosp', 'paginador')->name('torneo.paginador');
@@ -161,6 +162,7 @@ Route::get('/subcategoria/{subcategoriaId}/jugadores/paginador', [SubCategoryCon
 
 Route::get('/subcategoria/{subcategoriaId}/partidos/paginador', [SubCategoryController::class, 'partidosPorSubcategoriaPaginador']);
 
+Route::get('/subcategoria/{subcategoriaId}/partidos-calendario', [SubCategoryController::class, 'calendarioPorSubcategoria']);
 
 
 
