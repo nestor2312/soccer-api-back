@@ -23,6 +23,7 @@ public function index() {
             'semis'   => $fase->where('numPartido', 3)->values(),
             'final'   => $fase->where('numPartido', 4)->values(),
            'tercer_puesto' => $fase->where('numPartido', 5)->values(),
+            'dieciseisavos' => $fase->where('numPartido', 6)->values(),
         ])
     );
 }
@@ -42,6 +43,7 @@ public function index() {
                 'semis'   => $grupo->where('numPartido', 3)->values(),
                 'final'   => $grupo->where('numPartido', 4)->values(),
                'tercer_puesto' => $grupo->where('numPartido', 5)->values(),
+                'dieciseisavos' => $grupo->where('numPartido', 6)->values(),
             ];
         });
 
