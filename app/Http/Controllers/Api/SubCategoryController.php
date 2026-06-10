@@ -171,7 +171,8 @@ public function partidosPorSubcategoriaPaginador($subcategoriaId)
     ->orWhereHas('equipoB.grupo', function ($query) use ($subcategoriaId) {
         $query->where('subcategoria_id', $subcategoriaId);
     })
-    ->with(['equipoA', 'equipoB'])->orderBy('id', 'desc')->paginate(9);
+    ->with(['equipoA', 'equipoB'])  ->orderBy('fecha', 'asc')
+        ->orderBy('hora', 'asc')->paginate(9);
 
     return response()->json($partidos);
 }
