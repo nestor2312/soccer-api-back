@@ -31,19 +31,19 @@ use App\Models\User;
 //     }
 // });
 
-// Route::get('/test-mail', function () {
-//     // Buscas un usuario real de tu base de datos
-//     $usuario = User::first(); // O puedes buscarlo por ID con User::find(1)
+Route::get('/test-mail', function () {
+    // Buscas un usuario real de tu base de datos
+    $usuario = User::first(); // O puedes buscarlo por ID con User::find(1)
 
-//     if (!$usuario) {
-//         return 'No hay usuarios registrados aún.';
-//     }
+    if (!$usuario) {
+        return 'No hay usuarios registrados aún.';
+    }
 
-//     // Envías el correo
-//     Mail::to($usuario->email)->send(new WelcomeMail($usuario));
+    // Envías el correo
+    Mail::to($usuario->email)->send(new WelcomeMail($usuario));
 
-//     return "Correo enviado a {$usuario->email}";
-// });
+    return "Correo enviado a {$usuario->email}";
+});
 
 // Route::get('/preview-vista', function () {
 //     Mail::to('ruebahost9@gmail.com')->send(new WelcomeMail);
