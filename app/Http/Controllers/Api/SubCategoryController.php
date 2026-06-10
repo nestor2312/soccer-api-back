@@ -152,7 +152,6 @@ public function calendarioPorSubcategoria($subcategoriaId)
                 $query->where('subcategoria_id', $subcategoriaId);
             });
         })
-        // Solo para debug, comenta la fecha:
         // ->where('fecha', '>=', now()->subDay()->toDateString())
         ->orderBy('fecha', 'asc')
         ->orderBy('hora', 'asc')
