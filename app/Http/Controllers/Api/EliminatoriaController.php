@@ -71,9 +71,13 @@ public function index() {
                 'marcador2_vuelta' => 'nullable|integer',
                 'marcador1_penales' => 'nullable|integer',
                 'marcador2_penales' => 'nullable|integer',
+                'fecha' => 'nullable|string',
+                'hora' => 'nullable|string',
+                'sede' => 'nullable|string',
                 'nombre_fase' => 'required|string',
                 'numPartido' => 'required|integer',
                 'subcategoria_id' => 'required|integer' ,
+                
              'tipo_eliminatoria' => 'required|in:solo_ida,ida_vuelta,penales',
              
                 
@@ -119,6 +123,9 @@ public function index() {
             'marcador2_vuelta' => 'nullable|integer',
             'marcador1_penales' => 'nullable|integer',
             'marcador2_penales' => 'nullable|integer',
+             'fecha' => 'nullable|string',
+                'hora' => 'nullable|string',
+                'sede' => 'nullable|string',
             'numPartido' => 'required|integer',
              'nombre_fase' => 'nullable|string',
             'subcategoria_id' => 'required|integer',
@@ -144,6 +151,9 @@ public function index() {
         $eliminatoria->marcador1_penales = $request->marcador1_penales;
         $eliminatoria->marcador2_penales = $request->marcador2_penales;
         $eliminatoria->numPartido = $request->numPartido;
+          $eliminatoria->fecha = $request->fecha;
+            $eliminatoria->hora = $request->hora;
+              $eliminatoria->sede = $request->sede;
         $eliminatoria->subcategoria_id = $request->subcategoria_id;
         $eliminatoria->tipo_eliminatoria = $request->tipo_eliminatoria;
         $eliminatoria->tipo_partido = $request->tipo_partido;

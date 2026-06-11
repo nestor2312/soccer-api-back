@@ -21,6 +21,9 @@ class Eliminatoria extends Model
       'subcategoria_id',
       'tipo_eliminatoria',
       'tipo_partido',
+      'fecha',
+      'hora',
+      'sede',
       'nombre_fase',];
 
     public function equipoAa()
