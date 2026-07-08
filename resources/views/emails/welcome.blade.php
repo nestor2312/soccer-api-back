@@ -55,7 +55,7 @@
         <li>📷 Subir logos e imágenes personalizadas.</li>
       </ul>
 
-      <a href="{{ url('https://fubolzona.com/login') }}" 
+      <a href="{{ url('https://1ertorneoelitefundesa.fubolzona.com/login') }}" 
          style="display:inline-block; background-color:#00BF63; color:#fff; text-decoration:none; padding:12px 25px; border-radius:6px; font-weight:bold; box-shadow:0 3px 6px rgba(0,0,0,0.2);">
          Ir al fubol
       </a>

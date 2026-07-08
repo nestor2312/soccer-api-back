@@ -27,6 +27,11 @@
         HOLA, <span style="text-transform: uppercase;">{{$usuario->name}}</span>
       </h1>
       
+<p style="font-size:16px; line-height:1.5; margin:20px 0;">
+        Gracias por registrarte en <strong style="color:#00BF63;">Fubol</strong>.  
+        Estamos emocionados de tenerte con nosotros.
+      </p>
+
       <p style="font-size:16px; line-height:1.6; color: #555;">
         Es un gusto saludarte. Tu registro en <strong>Fubol</strong> se ha completado con éxito. <br>
         Desde este momento, ya tienes acceso total a tu plataforma personalizada para gestionar tu torneo.
@@ -42,7 +47,7 @@
         </ul>
       </div>
 
-      <a href="{{ url('https://mundialdeclubescanare.fubolzona.com/') }}" class="boton" 
+      <a href="{{ url('https://1ertorneoelitefundesa.fubolzona.com/') }}" class="boton" 
          style="display:inline-block; background-color:#00BF63; color:#ffffff; padding:15px 35px; text-decoration:none; border-radius:8px; font-weight:bold; font-size: 16px; box-shadow:0 4px 10px rgba(0,191,99,0.3);">
          COMENZAR A ORGANIZAR
       </a>
