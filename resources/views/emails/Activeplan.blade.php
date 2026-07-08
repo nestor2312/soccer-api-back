@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bienvenido a Fubol</title>
   <style>
+   
     @media only screen and (max-width: 600px) {
       body { padding: 10px !important; }
       h1 { font-size: 18px !important; }
