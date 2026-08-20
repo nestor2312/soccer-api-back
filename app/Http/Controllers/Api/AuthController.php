@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\ActiveplanMail;
+use App\Mail\WelcomeMail;
 
 use Illuminate\Support\Facades\Log; 
 
@@ -62,7 +62,7 @@ $userCount = User::count();
     ]);
 
      // ✅ Envía el correo después de crear el usuario
-    Mail::to($user->email)->send(new ActiveplanMail($user));
+    Mail::to($user->email)->send(new WelcomeMail($user));
 
 
 
