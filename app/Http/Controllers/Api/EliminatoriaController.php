@@ -50,7 +50,16 @@ public function index() {
     return response()->json($resultado);
 }
 
-
+private function limitesPlayIn() {
+    return [
+        1 => 4, // octavos
+        2 => 2, // cuartos
+        3 => 1, // semis (no permitido)
+        4 => 0, // final (no permitido)
+        5 => 0, // tercer puesto
+        6 => 8, // dieciseisavos
+    ];
+}
     
 
     /**
@@ -61,6 +70,9 @@ public function index() {
      */
     public function store(Request $request)
     {
+$request->merge([
+    'tipo_partido_extra' => $request->tipo_partido_extra ?? 'normal'
+]);
         {
             $request->validate([
                 'equipo_a_id' => 'nullable|exists:equipos,id',
@@ -76,12 +88,38 @@ public function index() {
                 'sede' => 'nullable|string',
                 'nombre_fase' => 'required|string',
                 'numPartido' => 'required|integer',
-                'subcategoria_id' => 'required|integer' ,
-                
+                'subcategoria_id' => 'required|integer',
+                'tipo_partido_extra' => 'nullable|in:normal,play_in',
+                'tipo_partido' => 'nullable|in:ida,vuelta',
              'tipo_eliminatoria' => 'required|in:solo_ida,ida_vuelta,penales',
              
                 
             ]);
+
+             $limites = $this->limitesPlayIn();
+
+if ($request->tipo_partido_extra === 'play_in') {
+
+    $max = $limites[$request->numPartido] ?? 0;
+
+    if ($max === 0) {
+        return response()->json([
+            'error' => 'No se permite play-in en esta fase'
+        ], 422);
+    }
+
+    $cantidadActual = Eliminatoria::where('subcategoria_id', $request->subcategoria_id)
+        ->where('numPartido', $request->numPartido)
+        ->where('tipo_partido_extra', 'play_in')
+        ->count();
+
+    if ($cantidadActual >= $max) {
+        return response()->json([
+            'error' => "Solo se permiten {$max} partidos play-in en esta fase"
+        ], 422);
+    }
+}
+
     
             $eliminatoria = Eliminatoria::create($request->all());
     
@@ -113,6 +151,10 @@ public function index() {
      */
     public function update(Request $request, $id)
     {
+
+    $request->merge([
+    'tipo_partido_extra' => $request->tipo_partido_extra ?? 'normal'
+]);
         // Validar los datos de entrada
         $request->validate([
             'equipo_a_id' => 'nullable|exists:equipos,id',
@@ -130,8 +172,34 @@ public function index() {
              'nombre_fase' => 'nullable|string',
             'subcategoria_id' => 'required|integer',
             'tipo_eliminatoria' => 'required|in:solo_ida,ida_vuelta,penales',
-            'tipo_partido' => 'nullable|in:ida,vuelta'
+            'tipo_partido' => 'nullable|in:ida,vuelta',
+            'tipo_partido_extra' => 'nullable|in:normal,play_in',
         ]);
+
+        $limites = $this->limitesPlayIn();
+
+    if ($request->tipo_partido_extra === 'play_in') {
+
+    $max = $limites[$request->numPartido] ?? 0;
+
+    if ($max === 0) {
+        return response()->json([
+            'error' => 'No se permite play-in en esta fase'
+        ], 422);
+    }
+
+    $cantidadActual = Eliminatoria::where('subcategoria_id', $request->subcategoria_id)
+        ->where('numPartido', $request->numPartido)
+        ->where('tipo_partido_extra', 'play_in')
+        ->where('id', '!=', $id)
+        ->count();
+
+    if ($cantidadActual >= $max) {
+        return response()->json([
+            'error' => "Límite de play-in alcanzado"
+        ], 422);
+    }
+}
     
         // Buscar la eliminatoria por su id
         $eliminatoria = Eliminatoria::find($id);
@@ -157,7 +225,7 @@ public function index() {
         $eliminatoria->subcategoria_id = $request->subcategoria_id;
         $eliminatoria->tipo_eliminatoria = $request->tipo_eliminatoria;
         $eliminatoria->tipo_partido = $request->tipo_partido;
-    
+     $eliminatoria->tipo_partido_extra = $request->tipo_partido_extra;
         // Guardar los cambios
         $eliminatoria->save();
         

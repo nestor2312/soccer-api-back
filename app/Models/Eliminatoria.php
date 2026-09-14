@@ -24,7 +24,8 @@ class Eliminatoria extends Model
       'fecha',
       'hora',
       'sede',
-      'nombre_fase',];
+      'nombre_fase',
+      'tipo_partido_extra',];
 
     public function equipoAa()
     {
