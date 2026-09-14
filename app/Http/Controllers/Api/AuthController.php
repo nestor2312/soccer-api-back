@@ -60,7 +60,7 @@ $userCount = User::count();
         'email' => $request->email,
         'password' => Hash::make($request->password),
     ]);
-
+// 123
      // ✅ Envía el correo después de crear el usuario
     Mail::to($user->email)->send(new WelcomeMail($user));
 
