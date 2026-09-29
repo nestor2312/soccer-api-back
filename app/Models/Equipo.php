@@ -8,15 +8,27 @@ use Illuminate\Database\Eloquent\Model;
 class Equipo extends Model
 {
     use HasFactory;
-      protected $fillable = ['grupo_id','nombre', 'archivo','color_hover'];
 
-      
-      public function grupo()
-      {
-          return $this->belongsTo(Grupos::class); 
-      }
+    protected $fillable = [
+        'nombre',
+        'archivo',
+        'color_hover'
+    ];
 
-      public function jugadores(){
+
+       public function grupo()
+{
+    // Parámetros: ModeloRelacionado, 'tabla_pivote', 'fk_este_modelo', 'fk_modelo_destino'
+    return $this->belongsToMany(Grupos::class, 'grupo_equipo', 'equipo_id', 'grupo_id');
+}
+
+   public function grupos()
+{
+    // Parámetros: ModeloRelacionado, 'tabla_pivote', 'fk_este_modelo', 'fk_modelo_destino'
+    return $this->belongsToMany(Grupos::class, 'grupo_equipo', 'equipo_id', 'grupo_id');
+}
+
+     public function jugadores(){
         return $this->hasMany(Player::class);
     }
 
@@ -27,5 +39,6 @@ class Equipo extends Model
     public function eliminatorias(){
       return $this->hasMany(Eliminatoria::class);
   }
-  
+
+   
 }

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Mail\WelcomeMail;
 use App\Mail\EndDemoMail;
+use App\Mail\ActiveplanMail;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 /*
@@ -31,29 +32,44 @@ use App\Models\User;
 //     }
 // });
 
-Route::get('/test-mail', function () {
-    // Buscas un usuario real de tu base de datos
-    $usuario = User::first(); // O puedes buscarlo por ID con User::find(1)
+// Route::get('/test-mail', function () {
+//     // Buscas un usuario real de tu base de datos
+//     $usuario = User::first(); // O puedes buscarlo por ID con User::find(1)
 
-    if (!$usuario) {
-        return 'No hay usuarios registrados aún.';
-    }
+//     if (!$usuario) {
+//         return 'No hay usuarios registrados aún.';
+//     }
 
-    // Envías el correo
-    Mail::to($usuario->email)->send(new WelcomeMail($usuario));
+//     // Envías el correo
+//     Mail::to($usuario->email)->send(new WelcomeMail($usuario));
 
-    return "Correo enviado a {$usuario->email}";
+//     return "Correo enviado a {$usuario->email}";
+// });
+
+Route::get('/preview-vista', function () {
+    // Obtiene el primer usuario de la BD o genera uno en memoria para la prueba
+    $usuario = User::first() ?? new User(['name' => 'Usuario Prueba', 'email' => 'pruebahost9@gmail.com']);
+
+    Mail::to('pruebahost9@gmail.com')->send(new WelcomeMail($usuario));
+
+    return "✅ Correo de prueba enviado correctamente";
 });
 
-// Route::get('/preview-vista', function () {
-//     Mail::to('ruebahost9@gmail.com')->send(new WelcomeMail);
-//     return "✅ Correo de prueba enviado correctamente";
-// });
+Route::get('/test-maill', function () {
 
-// Route::get('/test-maill', function () {
-//     Mail::to('nc6925935@gmail.com')->send(new EndDemoMail());
-//     return 'enviado';
-// });
+    $usuario = User::first() ?? new User(['name' => 'Usuario Prueba', 'email' => 'pruebahost9@gmail.com']);
+
+    Mail::to('pruebahost9@gmail.com')->send(new EndDemoMail($usuario));
+    return 'enviado';
+});
+
+Route::get('/test-active', function () {
+
+    $usuario = User::first() ?? new User(['name' => 'Usuario Prueba', 'email' => 'pruebahost9@gmail.com']);
+
+    Mail::to('pruebahost9@gmail.com')->send(new ActiveplanMail($usuario));
+    return 'enviado correo de activacion';
+});
 
 
 Route::get('/', function () {

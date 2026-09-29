@@ -17,18 +17,57 @@ class EquiposController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function equiposXgrupo($grupoId)
+//   */
+ public function asignarAGrupo(Request $request, $grupoId)
 {
-    $equipos = Equipo::where('grupo_id', $grupoId)->get();
-    return response()->json($equipos);
+    $grupo = Grupos::findOrFail($grupoId);
+
+    $request->validate([
+        'equipo_ids'   => 'nullable|array', // 'nullable' permite enviar un array vacío [] si desmarcan todos
+        'equipo_ids.*' => 'exists:equipos,id'
+    ]);
+
+    // Usamos sync() para sincronizar exactos los IDs recibidos:
+    // Agrega los nuevos, mantiene los seleccionados y ELIMINA los que se desmarcaron.
+    $grupo->equipos()->sync($request->input('equipo_ids', []));
+
+    return response()->json([
+        'message' => 'Equipos actualizados correctamente en el grupo ' . $grupo->nombre
+    ], 200);
 }
+
+    /**
+     * Remover un equipo de un grupo específico
+     */
+    public function removerDeGrupo($grupoId, $equipoId)
+    {
+        $grupo = Grupos::findOrFail($grupoId);
+        
+        // Elimina el registro de la tabla pivote
+        $grupo->equipos()->detach($equipoId);
+
+        return response()->json(['message' => 'Equipo removido del grupo correctamente']);
+    }
+
+    /**
+     * Obtener todos los equipos pertenecientes a un grupo
+     */
+    public function equiposXgrupo($grupoId)
+    {
+        $grupo = Grupos::with('equipos')->findOrFail($grupoId);
+        
+        return response()->json($grupo->equipos);
+    }
+
+
+   
     public function index()
     {
       
         // $equipos = Equipo::all();
         // return $equipos ;
 
-                $equipos = Equipo::with('grupo.subcategoria.categoria.torneo')->orderBy('id', 'desc')->paginate(10); 
+                $equipos = Equipo::with('grupos.subcategoria.categoria.torneo')->orderBy('id', 'desc')->paginate(10); 
       
         return $equipos;
 
@@ -40,7 +79,7 @@ class EquiposController extends Controller
        
         $validated = $request->validate([
             'nombre' => 'required|string|max:255',
-            'grupo_id' => 'required|integer|exists:grupos,id',
+            // 'grupo_id' => 'required|integer|exists:grupos,id',
             'archivo' => 'nullable|file|image|max:2048', 
              'color_hover' => 'nullable|string',
         ]);
@@ -48,7 +87,7 @@ class EquiposController extends Controller
         // Creando el nuevo equipo
         $equipo = new Equipo();
         $equipo->nombre = $request->nombre;  // Usando el método $request->nombre
-        $equipo->grupo_id = $request->grupo_id; // Usando el método $request->grupo_id
+        // $equipo->grupo_id = $request->grupo_id; // Usando el método $request->grupo_id
          $equipo->color_hover = $request->color_hover;
         
         // Verificando si se subió un archivo
@@ -92,7 +131,7 @@ class EquiposController extends Controller
     {
         // Validación de los datos de entrada
         $request->validate([
-            'grupo_id' => 'required|exists:grupos,id',
+            // 'grupo_id' => 'required|exists:grupos,id',
             'nombre' => 'required|string|max:255',
              'color_hover' => 'nullable|string',
             'archivo' => [
@@ -105,7 +144,7 @@ class EquiposController extends Controller
         $equipo = Equipo::findOrFail($id);
         // Actualizar los datos del equipo
         $equipo->nombre = $request->nombre;
-        $equipo->grupo_id = $request->grupo_id;
+        // $equipo->grupo_id = $request->grupo_id;
           $equipo->color_hover = $request->color_hover;
         // Verificar si se ha recibido un archivo en base64
         if ($request->has('archivo')) {

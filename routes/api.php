@@ -65,6 +65,10 @@ Route::controller(EquiposController::class)->group(function () {
     Route::delete('/equipo/{id}', 'destroy')->name('equipo.destroy');
     Route::put('/equipo/{id}', 'update')->name('equipo.update');
 });
+Route::put('/grupos/{grupoId}/equipos', [EquiposController::class, 'asignarAGrupo']);
+Route::get('/equipos-disponibles', [EquiposController::class, 'disponibles']);
+
+
 
 Route::controller(PartidosController::class)->group(function () {
     Route::get('/partidos', 'index')->name('partidos.index');
