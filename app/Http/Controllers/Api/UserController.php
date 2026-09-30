@@ -96,7 +96,12 @@ public function HomeclassificationAll(Request $request)
                 UNION ALL
                 SELECT p.equipoB_id AS team_id, p.marcador2 AS GF, p.marcador1 AS GA FROM partidos p
             ) u ON u.team_id = e.id
-            WHERE e.grupo_id = :grupo_id
+           WHERE EXISTS (
+    SELECT 1 
+    FROM grupo_equipo ge 
+    WHERE ge.equipo_id = e.id 
+    AND ge.grupo_id = :grupo_id
+)
             GROUP BY e.id, e.nombre, e.archivo
             ORDER BY puntos DESC', 
             ['grupo_id' => $grupo->id]);
@@ -164,7 +169,12 @@ public function HomeclassificationAll(Request $request)
                 UNION ALL
                 SELECT p.equipoB_id AS team_id, p.marcador2 AS GF, p.marcador1 AS GA FROM partidos p
             ) u ON u.team_id = e.id
-            WHERE e.grupo_id = :grupo_id
+           WHERE EXISTS (
+    SELECT 1 
+    FROM grupo_equipo ge 
+    WHERE ge.equipo_id = e.id 
+    AND ge.grupo_id = :grupo_id
+)
             GROUP BY e.id, e.nombre, e.archivo
             ORDER BY puntos DESC', 
             ['grupo_id' => $grupo->id]);
