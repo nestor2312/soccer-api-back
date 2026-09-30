@@ -225,7 +225,12 @@ LEFT JOIN (
     FROM partidos p
     WHERE p.marcador1 IS NOT NULL AND p.marcador2 IS NOT NULL
 ) u ON u.team_id = e.id
-WHERE e.grupo_id = :grupo_id
+WHERE EXISTS (
+    SELECT 1 
+    FROM grupo_equipo ge 
+    WHERE ge.equipo_id = e.id 
+    AND ge.grupo_id = :grupo_id
+)
 GROUP BY e.id, e.nombre, e.archivo
 ORDER BY puntos DESC, gd DESC, gf DESC
 ', 
@@ -292,7 +297,12 @@ LEFT JOIN (
     FROM partidos p
     WHERE p.marcador1 IS NOT NULL AND p.marcador2 IS NOT NULL
 ) u ON u.team_id = e.id
-WHERE e.grupo_id = :grupo_id
+WHERE EXISTS (
+    SELECT 1 
+    FROM grupo_equipo ge 
+    WHERE ge.equipo_id = e.id 
+    AND ge.grupo_id = :grupo_id
+)
 GROUP BY e.id, e.nombre, e.archivo
 ORDER BY puntos DESC, gd DESC, gf DESC
 ', 
