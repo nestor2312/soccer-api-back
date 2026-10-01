@@ -189,10 +189,12 @@ public function ClasificacionPorSubcategoria($subcategoriaId)
 
     foreach ($grupos as $grupo) {
         // Consulta para obtener los equipos de cada grupo con estadísticas en 0 si no han jugado partidos
-        $equipos = DB::select('SELECT 
+$equipos = DB::select("
+SELECT 
     e.id,
     e.nombre,
     e.archivo,
+
     COALESCE(SUM(
         CASE 
             WHEN u.GF > u.GA THEN 3
@@ -200,6 +202,7 @@ public function ClasificacionPorSubcategoria($subcategoriaId)
             ELSE 0
         END
     ), 0) AS puntos,
+
     COALESCE(SUM(CASE WHEN u.GF > u.GA THEN 1 ELSE 0 END), 0) AS pg,
     COALESCE(SUM(CASE WHEN u.GF < u.GA THEN 1 ELSE 0 END), 0) AS pp,
     COALESCE(SUM(CASE WHEN u.GF = u.GA THEN 1 ELSE 0 END), 0) AS pe,
@@ -207,14 +210,18 @@ public function ClasificacionPorSubcategoria($subcategoriaId)
     COALESCE(SUM(u.GF), 0) AS gf,
     COALESCE(SUM(u.GA), 0) AS gc,
     COALESCE(SUM(u.GF - u.GA), 0) AS gd
+
 FROM equipos e
+
 LEFT JOIN (
     SELECT 
         p.equipoA_id AS team_id,
         p.marcador1 AS GF,
         p.marcador2 AS GA
     FROM partidos p
-    WHERE p.marcador1 IS NOT NULL AND p.marcador2 IS NOT NULL
+    WHERE p.grupo_id = ?
+    AND p.marcador1 IS NOT NULL 
+    AND p.marcador2 IS NOT NULL
 
     UNION ALL
 
@@ -223,18 +230,25 @@ LEFT JOIN (
         p.marcador2 AS GF,
         p.marcador1 AS GA
     FROM partidos p
-    WHERE p.marcador1 IS NOT NULL AND p.marcador2 IS NOT NULL
+    WHERE p.grupo_id = ?
+    AND p.marcador1 IS NOT NULL 
+    AND p.marcador2 IS NOT NULL
 ) u ON u.team_id = e.id
+
 WHERE EXISTS (
     SELECT 1 
     FROM grupo_equipo ge 
     WHERE ge.equipo_id = e.id 
-    AND ge.grupo_id = :grupo_id
+    AND ge.grupo_id = ?
 )
+
 GROUP BY e.id, e.nombre, e.archivo
 ORDER BY puntos DESC, gd DESC, gf DESC
-', 
-            ['grupo_id' => $grupo->id]);
+", [
+    $grupo->id,
+    $grupo->id,
+    $grupo->id
+]);
 
         // Añadir los datos del grupo con sus equipos
         $datosGrupos[] = [
@@ -261,10 +275,12 @@ public function ClasificacionInicioPorSubcategoria($subcategoriaId)
     // Recorrer los grupos y obtener los equipos con sus estadísticas
     foreach ($grupos as $grupo) {
         // Consulta para obtener los equipos de cada grupo
-        $equipos = DB::select('SELECT 
+   $equipos = DB::select("
+SELECT 
     e.id,
     e.nombre,
     e.archivo,
+
     COALESCE(SUM(
         CASE 
             WHEN u.GF > u.GA THEN 3
@@ -272,6 +288,7 @@ public function ClasificacionInicioPorSubcategoria($subcategoriaId)
             ELSE 0
         END
     ), 0) AS puntos,
+
     COALESCE(SUM(CASE WHEN u.GF > u.GA THEN 1 ELSE 0 END), 0) AS pg,
     COALESCE(SUM(CASE WHEN u.GF < u.GA THEN 1 ELSE 0 END), 0) AS pp,
     COALESCE(SUM(CASE WHEN u.GF = u.GA THEN 1 ELSE 0 END), 0) AS pe,
@@ -279,14 +296,18 @@ public function ClasificacionInicioPorSubcategoria($subcategoriaId)
     COALESCE(SUM(u.GF), 0) AS gf,
     COALESCE(SUM(u.GA), 0) AS gc,
     COALESCE(SUM(u.GF - u.GA), 0) AS gd
+
 FROM equipos e
+
 LEFT JOIN (
     SELECT 
         p.equipoA_id AS team_id,
         p.marcador1 AS GF,
         p.marcador2 AS GA
     FROM partidos p
-    WHERE p.marcador1 IS NOT NULL AND p.marcador2 IS NOT NULL
+    WHERE p.grupo_id = ?
+    AND p.marcador1 IS NOT NULL 
+    AND p.marcador2 IS NOT NULL
 
     UNION ALL
 
@@ -295,18 +316,26 @@ LEFT JOIN (
         p.marcador2 AS GF,
         p.marcador1 AS GA
     FROM partidos p
-    WHERE p.marcador1 IS NOT NULL AND p.marcador2 IS NOT NULL
+    WHERE p.grupo_id = ?
+    AND p.marcador1 IS NOT NULL 
+    AND p.marcador2 IS NOT NULL
 ) u ON u.team_id = e.id
+
 WHERE EXISTS (
     SELECT 1 
     FROM grupo_equipo ge 
     WHERE ge.equipo_id = e.id 
-    AND ge.grupo_id = :grupo_id
+    AND ge.grupo_id = ?
 )
+
 GROUP BY e.id, e.nombre, e.archivo
 ORDER BY puntos DESC, gd DESC, gf DESC
-', 
-            ['grupo_id' => $grupo->id]);
+", [
+    $grupo->id,
+    $grupo->id,
+    $grupo->id
+]);
+          
         // Añadir los datos del grupo con sus equipos
         $datosGrupos[] = [
             'grupo' => $grupo,

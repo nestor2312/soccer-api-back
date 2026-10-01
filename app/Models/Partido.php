@@ -9,7 +9,7 @@ class Partido extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['marcador1','marcador2','equipoA_id', 'equipoB_id','hora','fecha'];
+    protected $fillable = ['marcador1','marcador2','equipoA_id', 'equipoB_id','hora','fecha','sede','jornada','grupo_id'];
     public function equipoA()
     {
         return $this->belongsTo(Equipo::class, 'equipoA_id');
@@ -24,4 +24,10 @@ class Partido extends Model
 {
     return $this->hasMany(EventoPartido::class);
 }
+
+public function grupo()
+{
+    return $this->belongsTo(Grupos::class, 'grupo_id');
+}
+
 }
