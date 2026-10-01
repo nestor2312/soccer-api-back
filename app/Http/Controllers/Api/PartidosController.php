@@ -11,6 +11,7 @@ class PartidosController extends Controller
     public function index(Request $request)
     {
         $query = Partido::with([
+              'grupo',
             'equipoA.grupos.subcategoria.categoria.torneo',
             'equipoB.grupos.subcategoria.categoria.torneo'
         ]);
@@ -61,6 +62,7 @@ class PartidosController extends Controller
     public function show($id)
     {
         return Partido::with([
+              'grupo',
             'equipoA.grupos.subcategoria.categoria.torneo',
             'equipoB.grupos.subcategoria.categoria.torneo'
         ])->findOrFail($id);
