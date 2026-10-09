@@ -131,7 +131,7 @@ public function partidosPorSubcategoria($subcategoriaId)
     ->orWhereHas('equipoB.grupo', function ($query) use ($subcategoriaId) {
         $query->where('subcategoria_id', $subcategoriaId);
     })
-    ->with(['equipoA', 'equipoB'])->orderBy('id', 'desc')->get();
+    ->with(['equipoA.grupo', 'equipoB.grupo'])->orderBy('id', 'desc')->get();
 
     return response()->json($partidos);
 }
@@ -140,7 +140,7 @@ public function partidosPorSubcategoria($subcategoriaId)
 
 public function calendarioPorSubcategoria($subcategoriaId)
 {
-    $partidos = Partido::with(['equipoA', 'equipoB'])
+    $partidos = Partido::with(['equipoA.grupo', 'equipoB.grupo'])
         ->where(function($q) use ($subcategoriaId) {
             // Buscamos partidos donde el Equipo A pertenezca a la subcategoría
             $q->whereHas('equipoA.grupo', function ($query) use ($subcategoriaId) {
@@ -171,7 +171,7 @@ public function partidosPorSubcategoriaPaginador($subcategoriaId)
     ->orWhereHas('equipoB.grupo', function ($query) use ($subcategoriaId) {
         $query->where('subcategoria_id', $subcategoriaId);
     })
-    ->with(['equipoA', 'equipoB'])->orderBy('id', 'desc')->paginate(9);
+    ->with(['equipoA.grupo', 'equipoB.grupo'])->orderBy('id', 'desc')->paginate(9);
 
     return response()->json($partidos);
 }
