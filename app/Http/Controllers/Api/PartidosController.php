@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Partido;
+use App\Models\CambioMarcadorPendiente;
 class PartidosController extends Controller
 {
     /**
@@ -65,8 +66,8 @@ public function index(Request $request)
         $partido -> equipoB()->associate( $request->equipoB_id );
         $partido -> fecha = $request->fecha;
         $partido -> hora = $request->hora;
-           $partido -> sede = $request->sede;
-           $partido -> jornada = $request->jornada;
+        $partido -> sede = $request->sede;
+       $partido -> jornada = $request->jornada;
       
         $partido ->save();
         return response()->json($partido, 201);
@@ -95,30 +96,89 @@ public function index(Request $request)
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        $partido = Partido::find($id);
-    
-        if (!$partido) {
-            return response()->json(['message' => 'Partido no encontrado'], 404);
-        }
-    
-        $validatedData = $request->validate([
-            'equipoA_id' => 'required|integer|exists:equipos,id',
-            'equipoB_id' => 'required|integer|exists:equipos,id',
-            'marcador1' => 'nullable|integer|min:0',
-            'marcador2' => 'nullable|integer|min:0',
-            'fecha' => 'nullable',
-            'hora' => 'nullable',
-            'jornada' => 'nullable',
-             'sede' => 'nullable',
-            
-        ]);
-    
-        $partido->update($validatedData);
-    
-        return response()->json(['message' => 'Partido actualizado correctamente', 'partido' => $partido], 200);
+   
+public function update(Request $request, $id)
+{
+    $partido = Partido::with([
+        'equipoA.grupo.subcategoria',
+        'equipoB.grupo.subcategoria',
+    ])->find($id);
+
+    if (!$partido) {
+        return response()->json([
+            'message' => 'Partido no encontrado'
+        ], 404);
     }
+
+    $validatedData = $request->validate([
+        'equipoA_id' => 'required|integer|exists:equipos,id',
+        'equipoB_id' => 'required|integer|different:equipoA_id|exists:equipos,id',
+        'marcador1' => 'nullable|integer|min:0',
+        'marcador2' => 'nullable|integer|min:0',
+        'fecha' => 'nullable',
+        'hora' => 'nullable',
+        'jornada' => 'nullable',
+        'sede' => 'nullable',
+    ]);
+
+    // Guardar los marcadores anteriores
+    $marcadorAnterior1 = $partido->marcador1;
+    $marcadorAnterior2 = $partido->marcador2;
+
+    // Actualizar el partido
+    $partido->update($validatedData);
+
+    // Detectar si cambió algún marcador
+    $cambioMarcador =
+        (array_key_exists('marcador1', $validatedData) &&
+            (string) $marcadorAnterior1 !==
+            (string) $partido->marcador1)
+        ||
+        (array_key_exists('marcador2', $validatedData) &&
+            (string) $marcadorAnterior2 !==
+            (string) $partido->marcador2);
+
+    if ($cambioMarcador) {
+        // Recargar las relaciones por si cambiaron los equipos
+        $partido->load([
+            'equipoA.grupo.subcategoria',
+            'equipoB.grupo.subcategoria',
+        ]);
+
+        $subcategoriaId =
+            $partido->equipoA?->grupo?->subcategoria_id;
+
+        // Registrar el cambio solo si el equipo tiene subcategoría
+        if ($subcategoriaId) {
+            $pendiente = CambioMarcadorPendiente::where(
+                'partido_id',
+                $partido->id
+            )
+                ->where('notificado', false)
+                ->first();
+
+            if ($pendiente) {
+                // Si ya hay un cambio pendiente del mismo partido,
+                // actualizarlo en lugar de duplicarlo.
+                $pendiente->update([
+                    'subcategoria_id' => $subcategoriaId,
+                ]);
+            } else {
+                CambioMarcadorPendiente::create([
+                    'partido_id' => $partido->id,
+                    'subcategoria_id' => $subcategoriaId,
+                    'notificado' => false,
+                ]);
+            }
+        }
+    }
+
+    return response()->json([
+        'message' => 'Partido actualizado correctamente',
+        'partido' => $partido->fresh(),
+    ], 200);
+}
+
     
 
     /**

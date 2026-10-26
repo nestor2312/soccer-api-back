@@ -14,6 +14,11 @@ return [
     |
     */
 
+'onesignal' => [
+    'app_id' => env('ONESIGNAL_APP_ID'),
+    'rest_api_key' => env('ONESIGNAL_REST_API_KEY'),
+],
+
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),
@@ -30,7 +35,7 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
  'resend' => [
-        'key' => env('re_h1qB8EXn_G6tPLZZDRqSyWLF9Eu1oifMN'),
+        'key' => env('RESEND_API_KEY'),
     ],
 
     
