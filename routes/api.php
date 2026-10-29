@@ -40,6 +40,8 @@ use App\Http\Controllers\Api\OneSignalController;
 Route::get('/onesignal/test', [OneSignalController::class, 'enviarPrueba']);
 Route::post('/onesignal/fixture', [OneSignalController::class, 'notificarFixture']);
 Route::post('/onesignal/cambiopartido', [OneSignalController::class, 'notificarcambiopartido']);
+// Route::post('/onesignal/CambioEliminatoria', [OneSignalController::class, 'notificarCambioEliminatoria']);
+// Route::post('/onesignal/MarcadorEliminatoria', [OneSignalController::class, 'notificarMarcadorEliminatoria']);
 // Ruta para obtener los jugadores del partido (La que te faltaba)
 Route::get('/partidos/{id}/jugadores', [EventoPartidoController::class, 'getJugadores']);
 

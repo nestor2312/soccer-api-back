@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Eliminatoria;
+use Illuminate\Support\Facades\Http;
 class EliminatoriaController extends Controller
 {
     /**
@@ -208,6 +209,66 @@ if ($request->tipo_partido_extra === 'play_in') {
         if (!$eliminatoria) {
             return response()->json(['message' => 'Eliminatoria no encontrada'], 404);
         }
+
+        // Guardar los datos anteriores antes de actualizarlos
+$datosAnteriores = $eliminatoria->only([
+    'equipo_a_id',
+    'equipo_b_id',
+    'marcador1_ida',
+    'marcador2_ida',
+    'marcador1_vuelta',
+    'marcador2_vuelta',
+    'marcador1_penales',
+    'marcador2_penales',
+    'fecha',
+    'hora',
+    'sede',
+    'nombre_fase',
+    'tipo_eliminatoria',
+]);
+
+// Detectar cambios en la programación
+$cambioFecha = $datosAnteriores['fecha'] != $request->fecha;
+$cambioHora = $datosAnteriores['hora'] != $request->hora;
+$cambioSede = $datosAnteriores['sede'] != $request->sede;
+
+// Detectar cambios en los marcadores
+$cambiosMarcador = [
+    'ida' => (
+        (string) $datosAnteriores['marcador1_ida'] !==
+        (string) $request->marcador1_ida
+    ) || (
+        (string) $datosAnteriores['marcador2_ida'] !==
+        (string) $request->marcador2_ida
+    ),
+
+    'vuelta' => (
+        (string) $datosAnteriores['marcador1_vuelta'] !==
+        (string) $request->marcador1_vuelta
+    ) || (
+        (string) $datosAnteriores['marcador2_vuelta'] !==
+        (string) $request->marcador2_vuelta
+    ),
+
+    'penales' => (
+        (string) $datosAnteriores['marcador1_penales'] !==
+        (string) $request->marcador1_penales
+    ) || (
+        (string) $datosAnteriores['marcador2_penales'] !==
+        (string) $request->marcador2_penales
+    ),
+];
+
+$cambioMarcador = in_array(true, $cambiosMarcador, true);
+
+// Detectar cambios en los equipos asignados
+$cambioEquipoA =
+    $datosAnteriores['equipo_a_id'] != $request->equipo_a_id;
+
+$cambioEquipoB =
+    $datosAnteriores['equipo_b_id'] != $request->equipo_b_id;
+
+$cambioEquipos = $cambioEquipoA || $cambioEquipoB;
     
         // Asignar los nuevos valores del request a la eliminatoria
         $eliminatoria->equipo_a_id = $request->equipo_a_id;
@@ -228,6 +289,48 @@ if ($request->tipo_partido_extra === 'play_in') {
      $eliminatoria->tipo_partido_extra = $request->tipo_partido_extra;
         // Guardar los cambios
         $eliminatoria->save();
+
+        
+if ($cambioMarcador) {
+    app(\App\Http\Controllers\Api\OnesignalController::class)
+        ->notificarMarcadorEliminatoria(
+            new Request([
+                'eliminatoria_id' => $eliminatoria->id,
+                'cambios_marcador' => $cambiosMarcador,
+            ])
+        );
+}
+
+// Notificar cambios en los equipos de la eliminatoria
+if ($cambioEquipos) {
+    app(\App\Http\Controllers\Api\OnesignalController::class)
+        ->notificarCambioEquiposEliminatoria(
+            new Request([
+                'eliminatoria_id' => $eliminatoria->id,
+                'cambio_equipo_a' => $cambioEquipoA,
+                'cambio_equipo_b' => $cambioEquipoB,
+            ])
+        );
+}
+
+
+        // Notificar cambios en la programación
+if ($cambioFecha || $cambioHora || $cambioSede) {
+
+    $notificacion = app(
+        \App\Http\Controllers\Api\OnesignalController::class
+    )->notificarCambioEliminatoria(
+        new Request([
+            'eliminatoria_id' => $eliminatoria->id,
+            'cambio_fecha' => $cambioFecha,
+            'cambio_hora' => $cambioHora,
+            'cambio_sede' => $cambioSede,
+            'fecha' => $eliminatoria->fecha,
+            'hora' => $eliminatoria->hora,
+            'sede' => $eliminatoria->sede,
+        ])
+    );
+}
         
     
         // Responder con éxito
