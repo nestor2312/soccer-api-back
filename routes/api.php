@@ -36,7 +36,7 @@ use App\Http\Controllers\Api\OneSignalController;
 // });
 
 
-
+// d
 Route::get('/onesignal/test', [OneSignalController::class, 'enviarPrueba']);
 Route::post('/onesignal/fixture', [OneSignalController::class, 'notificarFixture']);
 Route::post('/onesignal/cambiopartido', [OneSignalController::class, 'notificarcambiopartido']);
