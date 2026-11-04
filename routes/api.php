@@ -34,7 +34,25 @@ use App\Http\Controllers\Api\OnesignalController;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+use Illuminate\Support\Facades\Artisan;
 
+
+Route::get('/cron/procesar-marcadores', function (Request $request) {
+
+    if ($request->header('X-Cron-Token') !== env('CRON_SECRET')) {
+        return response()->json([
+            'error' => 'No autorizado'
+        ], 401);
+    }
+
+    Artisan::call('app:enviar-notificaciones-marcador');
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Proceso de marcadores ejecutado',
+        'output' => Artisan::output()
+    ]);
+});
 
 // d
 Route::get('/onesignal/test', [OnesignalController::class, 'enviarPrueba']);
