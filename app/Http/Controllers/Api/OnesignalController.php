@@ -325,8 +325,8 @@ public function notificarFixture(Request $request)
 ],
 
 //  'chrome_web_icon' => 'https://TU-DOMINIO.com/storage/notificaciones/logo-fubol.png',
-
-    'chrome_web_image' => 'https://fubol-campeonatos-production.up.railway.app/storage/uploads/notificacionfixture.png',
+                                                                                              
+    'chrome_web_image' => 'https://campeonatos.fubolzona.com/notificacionfixture.png',
 
         'included_segments' => ['All'],
     ]);
