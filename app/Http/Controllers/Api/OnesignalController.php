@@ -323,6 +323,11 @@ public function notificarFixture(Request $request)
         . $datos['nombre_grupo']
         . '. ¡Consulta el calendario en Fubolzona!',
 ],
+
+//  'chrome_web_icon' => 'https://TU-DOMINIO.com/storage/notificaciones/logo-fubol.png',
+
+    'chrome_web_image' => 'https://fubol-campeonatos-production.up.railway.app/storage/uploads/notificacionfixture.png',
+
         'included_segments' => ['All'],
     ]);
 
