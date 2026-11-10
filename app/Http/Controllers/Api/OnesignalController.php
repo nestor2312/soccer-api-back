@@ -113,6 +113,7 @@ $ronda = $rondas[$eliminatoria->numPartido] ?? 'Fase final';
         'contents' => [
 'es' => "Se actualizó la programación de {$equipoLocal} vs {$equipoVisitante}. {$fase} - {$ronda}. {$detalleTexto}. Consulta Fubolzona.",            'en' => "The schedule for {$equipoLocal} vs {$equipoVisitante} was updated. {$detalleTexto}. Check Fubolzona.",
         ],
+    'chrome_web_image' => 'https://campeonatos.fubolzona.com/notificacionactualizacion.png',
 
         'included_segments' => ['All'],
     ]);
@@ -289,6 +290,7 @@ public function notificarMarcadorEliminatoria(Request $request)
             'es' => "{$fase} - {$ronda}: {$equipoLocal} vs {$equipoVisitante}. {$detalleMarcadores}. Consulta Fubolzona.",
             'en' => "{$fase} - {$ronda}: {$equipoLocal} vs {$equipoVisitante}. {$detalleMarcadores}. Check Fubolzona.",
         ],
+    'chrome_web_image' => 'https://campeonatos.fubolzona.com/notificacionmarcador.png',
 
         'included_segments' => ['All'],
     ]);
@@ -404,6 +406,7 @@ public function notificarcambiopartido(Request $request)
             'es' => "Se actualizaron los datos de {$equipoLocal} vs {$equipoVisitante}. {$detalleTexto}. Consulta la información en Fubolzona.",
             'en' => "Updates for {$equipoLocal} vs {$equipoVisitante}. {$detalleTexto}. Check Fubolzona for details.",
         ],
+    'chrome_web_image' => 'https://campeonatos.fubolzona.com/notificacionactualizacion.png',
 
         'included_segments' => ['All'],
     ]);
