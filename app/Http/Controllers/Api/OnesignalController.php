@@ -113,7 +113,7 @@ $ronda = $rondas[$eliminatoria->numPartido] ?? 'Fase final';
         'contents' => [
 'es' => "Se actualizó la programación de {$equipoLocal} vs {$equipoVisitante}. {$fase} - {$ronda}. {$detalleTexto}. Consulta Fubolzona.",            'en' => "The schedule for {$equipoLocal} vs {$equipoVisitante} was updated. {$detalleTexto}. Check Fubolzona.",
         ],
-    'chrome_web_image' => 'https://campeonatos.fubolzona.com/notificacioneliminatoriaactalizada.png',
+    'chrome_web_image' => 'https://campeonatos.fubolzona.com/notificacioneliminatoriaactualizada.png',
 
         'included_segments' => ['All'],
     ]);
@@ -189,7 +189,7 @@ public function notificarCambioEquiposEliminatoria(Request $request)
             'es' => "{$fase} - {$ronda}: {$detalleTexto}. {$equipoA} vs {$equipoB}. Consulta Fubolzona.",
             'en' => "{$fase} - {$ronda}: {$detalleTexto}. {$equipoA} vs {$equipoB}. Check Fubolzona.",
         ],
-    'chrome_web_image' => 'https://campeonatos.fubolzona.com/notificacioneuipoconfirmado.png',
+    'chrome_web_image' => 'https://campeonatos.fubolzona.com/notificacionequipoconfirmado.png',
 
         'included_segments' => ['All'],
 
@@ -408,7 +408,7 @@ public function notificarcambiopartido(Request $request)
             'es' => "Se actualizaron los datos de {$equipoLocal} vs {$equipoVisitante}. {$detalleTexto}. Consulta la información en Fubolzona.",
             'en' => "Updates for {$equipoLocal} vs {$equipoVisitante}. {$detalleTexto}. Check Fubolzona for details.",
         ],
-    'chrome_web_image' => 'https://campeonatos.fubolzona.com/notificacionpartidoactializado.png',
+    'chrome_web_image' => 'https://campeonatos.fubolzona.com/notificacionpartidoactualizado.png',
 
         'included_segments' => ['All'],
     ]);
