@@ -78,6 +78,8 @@ class EnviarNotificacionesMarcador extends Command
                     'es' => $mensajeEs,
                     'en' => $mensajeEn,
                 ],
+                    'chrome_web_image' => 'https://campeonatos.fubolzona.com/notificacionmarcadoractualizado.png',
+
                 'included_segments' => ['All'],
             ]);
 
